@@ -2,8 +2,16 @@
 // ROYAL ATELIER MAIN SCRIPT
 // ===============================
 
-// FIX: Pehle check karenge ki LocalStorage me data hai ya nahi. Agar nahi hai, tabhi default data set hoga.
-let defaultProducts = [
+// Aapke naye 'images' folder ke mutabik exact paths
+const GitHubFallbackPhotos = [
+    "./images/1782475435503.png", 
+    "./images/1782475940117.png", 
+    "./images/1782476323492.png",
+    "./images/624746743_18054387368413838_5499993106643338994_n.webp.jpg"
+];
+
+// Initial default products agar LocalStorage khali ho toh
+const defaultProducts = [
     {
         id: 1,
         name: "Imperial Diamond Ring",
@@ -27,12 +35,30 @@ let defaultProducts = [
         category: "Earrings",
         image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908",
         tag: "New"
+    },
+    // Aapke folder ki do premium images pehle se store me load kar di hain
+    {
+        id: 4,
+        name: "Premium Earring Edition 1",
+        price: 85000,
+        category: "Earrings",
+        image: GitHubFallbackPhotos[0],
+        tag: "Exclusive"
+    },
+    {
+        id: 5,
+        name: "Premium Earring Edition 2",
+        price: 95000,
+        category: "Earrings",
+        image: GitHubFallbackPhotos[1],
+        tag: "Hot"
     }
 ];
 
 let products = JSON.parse(localStorage.getItem("products"));
 
-if (!products) {
+// FIX: Data sirf pehli baar load hoga, baar-baar refresh par overwrite nahi hoga
+if (!products || products.length === 0) {
     products = defaultProducts;
     localStorage.setItem("products", JSON.stringify(products));
 }
@@ -107,18 +133,19 @@ function addProduct() {
     let category = document.getElementById("ptype").value;
     let image = document.getElementById("image").value.trim();
 
-    if (!name || !price || !image) {
-        showToast("Fill all details");
+    if (!name || !price) {
+        showToast("Fill Product Name and Price!");
         return;
     }
 
-    // FIX: Agar GitHub ka normal link daala toh usko automatically RAW image link me convert karega takki sabko dikhe
-    if (image.includes("github.com") && !image.includes("raw.githubusercontent.com")) {
-        if (image.includes("/blob/")) {
-            image = image.replace("github.com", "raw.githubusercontent.com").replace("/blob/", "/");
-        } else if (!image.includes("?raw=true")) {
-            image = image + "?raw=true";
-        }
+    // FIX 1: Agar image field khali hai, toh automatic random local photo lagayega
+    if (!image) {
+        let randomIndex = Math.floor(Math.random() * GitHubFallbackPhotos.length);
+        image = GitHubFallbackPhotos[randomIndex];
+    } 
+    // FIX 2: Agar user ne sirf filename daala (jaise 'love1.jpg'), toh automatic path lagayega
+    else if (!image.startsWith("http://") && !image.startsWith("https://") && !image.startsWith("./")) {
+        image = "./images/" + image;
     }
 
     products.push({
