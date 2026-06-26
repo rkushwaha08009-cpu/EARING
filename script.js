@@ -1,8 +1,25 @@
-// ===============================
-// ROYAL ATELIER MAIN SCRIPT
-// ===============================
+// ==========================================
+// FIREBASE CONFIGURATION & INITIALIZATION
+// ==========================================
+const firebaseConfig = {
+    apiKey: "AIzaSyB9SeoDcKu1_WhaFIEYXI4IrcMM0mOQiOY",
+    authDomain: "earing-bfc75.firebaseapp.com",
+    databaseURL: "https://earing-bfc75-default-rtdb.firebaseio.com",
+    projectId: "earing-bfc75",
+    storageBucket: "earing-bfc75.firebasestorage.app",
+    messagingSenderId: "425149311395",
+    appId: "1:425149311395:web:c1df82b87dd66d4cf79216",
+    measurementId: "G-3Q7LMPM2ZW"
+};
 
-// Aapke images folder ke exact file names ka array
+// Initialize Firebase using compat SDK
+firebase.initializeApp(firebaseConfig);
+const database = firebase.database();
+
+// Global array for live sync data
+let products = [];
+
+// Aapke 'images' folder ke exact file names ki validation list
 const GitHubFallbackPhotos = [
     "1782475435503.png", 
     "1782475940117.png", 
@@ -10,38 +27,29 @@ const GitHubFallbackPhotos = [
     "624746743_18054387368413838_5499993106643338994_n.webp.jpg"
 ];
 
-// Initial default products jab pehli baar website kholenge
-const defaultProducts = [
-    {
-        id: 1,
-        name: "Premium Earring Edition 1",
-        price: 85000,
-        category: "Earrings",
-        image: "./images/1782475435503.png",
-        tag: "Exclusive"
-    },
-    {
-        id: 2,
-        name: "Premium Earring Edition 2",
-        price: 95000,
-        category: "Earrings",
-        image: "./images/1782475940117.png",
-        tag: "Hot"
+// ==========================================
+// REAL-TIME DATABASE SYNC
+// ==========================================
+database.ref("products").on("value", (snapshot) => {
+    const data = snapshot.val();
+    
+    if (data) {
+        products = Object.keys(data).map(key => ({
+            dbKey: key, // Live cloud ID for deletion
+            ...data[key]
+        }));
+    } else {
+        products = [];
     }
-];
 
-let products = JSON.parse(localStorage.getItem("products"));
+    // Live update triggers automatically on all sessions/tabs
+    loadProducts();
+    loadAdmin();
+});
 
-// Agar LocalStorage khali hai toh default data load hoga
-if (!products) {
-    products = defaultProducts;
-    localStorage.setItem("products", JSON.stringify(products));
-}
-
-// ===============================
-// LOAD STORE
-// ===============================
-
+// ==========================================
+// LOAD STORE (CUSTOMER INTERFACE)
+// ==========================================
 function loadProducts(list = products) {
     let box = document.getElementById("products");
     if (!box) return;
@@ -55,7 +63,7 @@ function loadProducts(list = products) {
     list.forEach(p => {
         box.innerHTML += `
             <div class="card">
-                <div class="badge">${p.tag}</div>
+                <div class="badge">${p.tag || "New"}</div>
                 <img src="${p.image}" alt="${p.name}">
                 <div class="info">
                     <h2>${p.name}</h2>
@@ -69,10 +77,9 @@ function loadProducts(list = products) {
     });
 }
 
-// ===============================
+// ==========================================
 // SEARCH & FILTER
-// ===============================
-
+// ==========================================
 function searchProduct() {
     let value = document.getElementById("search").value.toLowerCase();
     let result = products.filter(p => p.name.toLowerCase().includes(value));
@@ -89,20 +96,18 @@ function filterCategory() {
     }
 }
 
-// ===============================
+// ==========================================
 // WHATSAPP ORDER
-// ===============================
-
+// ==========================================
 function buyNow(name, price) {
     let number = "919876543210";
     let msg = `Hello, I am interested in ${name}\nPrice ₹${price}`;
     window.open("https://wa.me/" + number + "?text=" + encodeURIComponent(msg));
 }
 
-// ===============================
-// ADMIN ADD PRODUCT (SMART FILTER)
-// ===============================
-
+// ==========================================
+// ADMIN ADD PRODUCT (SMART FILTER FOR IMAGES FOLDER)
+// ==========================================
 function addProduct() {
     let name = document.getElementById("pname").value.trim();
     let price = Number(document.getElementById("price").value);
@@ -114,47 +119,48 @@ function addProduct() {
         return;
     }
 
-    // SMART CHECK: Check karega ki input kiya gaya naam hamare images array me hai ya nahi
+    // STRICT FOLDER CHECK
     if (!GitHubFallbackPhotos.includes(imageInput)) {
-        showToast("Error: Invalid Image Name! Use exact name from images folder.");
+        showToast("Error: Invalid Image Name!");
         alert("Bug Prevention: Yeh image folder me nahi hai! Kripya sahi naam dalein.\n\nAvailable files:\n" + GitHubFallbackPhotos.join("\n"));
-        return; // Yahi se block kar dega, product add nahi hoga
+        return;
     }
 
-    // Agar naam sahi hai, toh strict path generate karega
     let finalImagePath = "./images/" + imageInput;
 
-    products.push({
+    const newProduct = {
         id: Date.now(),
-        name,
-        price,
-        category,
+        name: name,
+        price: price,
+        category: category,
         image: finalImagePath,
         tag: "New"
-    });
+    };
 
-    localStorage.setItem("products", JSON.stringify(products));
-    showToast("Product Added Successfully!");
-    
-    // Reset inputs
-    document.getElementById("pname").value = "";
-    document.getElementById("price").value = "";
-    document.getElementById("image").value = "";
-
-    loadAdmin();
+    // Push to Firebase Cloud
+    database.ref("products").push(newProduct)
+        .then(() => {
+            showToast("Product Added to Cloud Store!");
+            document.getElementById("pname").value = "";
+            document.getElementById("price").value = "";
+            document.getElementById("image").value = "";
+        })
+        .catch((error) => {
+            console.error("Firebase Error: ", error);
+            showToast("Cloud connection error!");
+        });
 }
 
-// ===============================
-// ADMIN TABLE
-// ===============================
-
+// ==========================================
+// ADMIN TABLE LIVE INVENTORY
+// ==========================================
 function loadAdmin() {
     let table = document.getElementById("adminList");
     if (!table) return;
     table.innerHTML = "";
 
     if (products.length === 0) {
-        table.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#aaa;">Inventory is Empty! All Stock Cleared.</td></tr>`;
+        table.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#aaa;">Inventory is Empty! All Cloud Stock Cleared.</td></tr>`;
         return;
     }
 
@@ -166,41 +172,38 @@ function loadAdmin() {
                 <td>₹${p.price.toLocaleString("en-IN")}</td>
                 <td>${p.category}</td>
                 <td>
-                    <button class="gold-btn" onclick="deleteProduct(${p.id})">Delete</button>
+                    <button class="gold-btn" onclick="deleteProduct('${p.dbKey}')">Delete</button>
                 </td>
             </tr>
         `;
     });
 }
 
-// ===============================
-// DELETE SINGLE PRODUCT
-// ===============================
-
-function deleteProduct(id) {
-    products = products.filter(p => p.id !== id);
-    localStorage.setItem("products", JSON.stringify(products));
-    loadAdmin();
-    showToast("Deleted");
+// ==========================================
+// DELETE SINGLE PRODUCT FROM CLOUD
+// ==========================================
+function deleteProduct(dbKey) {
+    database.ref("products/" + dbKey).remove()
+        .then(() => {
+            showToast("Item Deleted from Cloud!");
+        });
 }
 
-// ===============================
-// SMART ACTION: CLEAR ALL STOCK
-// ===============================
-
+// ==========================================
+// UTILITY: CLEAR ALL STOCK AT ONCE
+// ==========================================
 function clearAllStock() {
-    if (confirm("Kya aap sach me poora STOCK KHALI karna chahte hain? Isse saari images aur items hat jayenge!")) {
-        products = []; // Poora array empty
-        localStorage.setItem("products", JSON.stringify(products)); // Storage saaf
-        loadAdmin();
-        showToast("All Stock Cleared!");
+    if (confirm("Kya aap sach me poora STOCK KHALI karna chahte hain? Isse real-time me har browser aur customer phone se items gayab ho jayenge!")) {
+        database.ref("products").remove()
+            .then(() => {
+                showToast("All Cloud Stock Cleared!");
+            });
     }
 }
 
-// ===============================
+// ==========================================
 // BRAND CHANGE & TOAST
-// ===============================
-
+// ==========================================
 function saveBrand() {
     let name = document.getElementById("brandName").value;
     localStorage.setItem("brand", name);
@@ -217,14 +220,8 @@ function showToast(text) {
     }, 2500);
 }
 
-// ===============================
-// START
-// ===============================
-
+// Start Loader Animation
 window.onload = function() {
-    loadProducts();
-    loadAdmin();
-
     let loader = document.getElementById("loader");
     if (loader) {
         setTimeout(() => {
