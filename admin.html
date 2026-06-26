@@ -16,7 +16,7 @@
 
         <div class="panel" style="border-color: #ff4444;">
             <h2 style="color: #ff4444;">Danger Zone (Stock Control)</h2>
-            <p style="color: #bbb; margin-bottom: 15px;">Ek click me website se saare items aur PNG images hane ke liye niche click karein:</p>
+            <p style="color: #bbb; margin-bottom: 15px;">Ek click me website aur cloud database se saare items hatane ke liye niche click karein:</p>
             <button class="gold-btn" onclick="clearAllStock()" style="border-color: #ff4444; color: #ff4444; font-weight: bold;">
                 <i class="fa-solid fa-trash-can"></i> RESET & CLEAR ALL STOCK
             </button>
@@ -45,7 +45,7 @@
         </div>
 
         <div class="panel">
-            <h2>Live Inventory</h2>
+            <h2>Live Inventory (Cloud Sync)</h2>
             <div style="overflow-x: auto;">
                 <table>
                     <thead>
@@ -64,6 +64,9 @@
     </div>
 
     <div class="toast" id="toast">Updated</div>
+
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
     <script src="script.js"></script>
 </body>
