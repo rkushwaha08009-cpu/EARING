@@ -1,0 +1,519 @@
+@import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Montserrat:wght@300;400;600&display=swap');
+
+:root{
+    --black:#070707;
+    --dark:#111111;
+    --card:#171717;
+    --gold:#d4af37;
+    --gold2:#f5d77a;
+    --white:#ffffff;
+    --gray:#aaa;
+}
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    scroll-behavior:smooth;
+}
+
+body{
+    background:
+    radial-gradient(circle at top,#25200f,#050505 45%);
+    color:white;
+    font-family:'Montserrat',sans-serif;
+    overflow-x:hidden;
+}
+
+
+/* LOADER */
+
+.loader{
+    position:fixed;
+    height:100vh;
+    width:100%;
+    background:#000;
+    z-index:9999;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+}
+
+.loader h1{
+    font-family:Cinzel;
+    color:var(--gold);
+    letter-spacing:8px;
+    animation:pulse 2s infinite;
+}
+
+
+@keyframes pulse{
+    50%{
+        opacity:.4;
+    }
+}
+
+
+/* NAVBAR */
+
+nav{
+
+    position:sticky;
+    top:0;
+    z-index:1000;
+
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+
+    padding:20px 8%;
+
+    background:rgba(0,0,0,.75);
+    backdrop-filter:blur(20px);
+
+    border-bottom:1px solid rgba(212,175,55,.2);
+
+}
+
+
+.logo{
+
+    font-family:Cinzel;
+    color:var(--gold);
+    font-size:28px;
+    letter-spacing:4px;
+
+}
+
+
+nav a{
+
+    color:white;
+    text-decoration:none;
+    margin:0 15px;
+    font-size:14px;
+
+}
+
+
+nav a:hover{
+    color:var(--gold);
+}
+
+
+
+/* HERO */
+
+.hero{
+
+height:90vh;
+
+display:flex;
+align-items:center;
+justify-content:center;
+text-align:center;
+
+background:
+linear-gradient(
+rgba(0,0,0,.5),
+rgba(0,0,0,.9)
+),
+url("https://images.unsplash.com/photo-1515562141207-7a88fb7ce338")
+center/cover;
+
+
+}
+
+
+.hero h1{
+
+font-family:Cinzel;
+font-size:65px;
+letter-spacing:8px;
+color:var(--gold);
+
+}
+
+
+
+.hero p{
+
+letter-spacing:5px;
+margin:20px;
+}
+
+
+
+.btn{
+
+display:inline-block;
+
+padding:15px 40px;
+
+border:1px solid var(--gold);
+
+color:var(--gold);
+
+text-decoration:none;
+
+transition:.4s;
+
+}
+
+
+.btn:hover{
+
+background:var(--gold);
+color:black;
+
+}
+
+
+
+/* PRODUCTS */
+
+.section{
+
+padding:80px 8%;
+
+}
+
+
+.title{
+
+text-align:center;
+
+font-family:Cinzel;
+
+font-size:40px;
+
+color:var(--gold);
+
+margin-bottom:40px;
+
+}
+
+
+
+.controls{
+
+display:flex;
+
+justify-content:center;
+
+gap:20px;
+
+flex-wrap:wrap;
+
+margin-bottom:40px;
+
+}
+
+
+
+input,select{
+
+padding:14px;
+
+background:#111;
+
+border:1px solid #444;
+
+color:white;
+
+}
+
+
+
+
+
+.grid{
+
+
+display:grid;
+
+grid-template-columns:
+repeat(auto-fit,minmax(280px,1fr));
+
+gap:35px;
+
+
+}
+
+
+
+.card{
+
+
+background:linear-gradient(
+145deg,#191919,#080808
+);
+
+
+border:1px solid rgba(212,175,55,.2);
+
+
+overflow:hidden;
+
+position:relative;
+
+
+transition:.5s;
+
+
+}
+
+
+
+.card:hover{
+
+transform:translateY(-15px);
+
+border-color:var(--gold);
+
+box-shadow:
+0 20px 50px rgba(212,175,55,.2);
+
+}
+
+
+
+.card img{
+
+
+width:100%;
+
+height:350px;
+
+object-fit:cover;
+
+
+transition:.6s;
+
+
+}
+
+
+
+.card:hover img{
+
+transform:scale(1.1);
+
+}
+
+
+
+.info{
+
+padding:25px;
+
+text-align:center;
+
+
+}
+
+
+.info h2{
+
+font-family:Cinzel;
+
+}
+
+
+
+.price{
+
+color:var(--gold);
+
+font-size:22px;
+
+margin:15px;
+
+}
+
+
+
+
+.badge{
+
+position:absolute;
+
+top:15px;
+
+left:15px;
+
+background:var(--gold);
+
+color:black;
+
+padding:6px 15px;
+
+font-size:12px;
+
+
+}
+
+
+
+/* BUTTON */
+
+.gold-btn{
+
+
+width:100%;
+
+padding:14px;
+
+background:transparent;
+
+border:1px solid var(--gold);
+
+color:var(--gold);
+
+cursor:pointer;
+
+transition:.4s;
+
+
+}
+
+
+
+.gold-btn:hover{
+
+background:var(--gold);
+
+color:black;
+
+}
+
+
+
+/* ADMIN */
+
+
+.dashboard{
+
+
+padding:50px 8%;
+
+
+}
+
+
+
+.panel{
+
+
+background:#111;
+
+padding:30px;
+
+border:
+
+1px solid rgba(212,175,55,.2);
+
+
+margin-bottom:30px;
+
+
+}
+
+
+
+.panel h2{
+
+font-family:Cinzel;
+
+color:var(--gold);
+
+margin-bottom:20px;
+
+}
+
+
+
+button{
+
+
+cursor:pointer;
+
+font-family:Montserrat;
+
+}
+
+
+
+
+table{
+
+width:100%;
+
+border-collapse:collapse;
+
+
+}
+
+
+td,th{
+
+padding:15px;
+
+border-bottom:1px solid #333;
+
+
+}
+
+
+
+
+/* TOAST */
+
+
+.toast{
+
+
+position:fixed;
+
+bottom:30px;
+
+right:30px;
+
+background:var(--gold);
+
+color:black;
+
+padding:15px 30px;
+
+display:none;
+
+z-index:9999;
+
+
+}
+
+
+
+/* MOBILE */
+
+
+@media(max-width:700px){
+
+
+.hero h1{
+
+font-size:35px;
+
+}
+
+
+nav{
+
+flex-direction:column;
+gap:15px;
+
+}
+
+
+
+}
