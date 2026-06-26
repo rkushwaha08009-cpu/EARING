@@ -1,260 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-<title>
-Royal Atelier Admin
-</title>
-
-
-<link rel="stylesheet" href="style.css">
-
-
-<link rel="stylesheet"
-href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
-
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Royal Atelier Admin</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 </head>
-
-
 <body>
 
-
-
-<div class="dashboard">
-
-
-
-<h1 class="title">
-
-<i class="fa-solid fa-crown"></i>
-
-ADMIN VAULT
-
-</h1>
-
-
-
-
-
-
-<div class="panel">
-
-
-<h2>
-Brand Settings
-</h2>
-
-
-
-<input 
-id="brandName"
-placeholder="Enter Brand Name">
-
-
-<br><br>
-
-
-<button class="gold-btn"
-onclick="saveBrand()">
-
-Update Brand
-
-</button>
-
-
-
-</div>
-
-
-
-
-
-
-
-<div class="panel">
-
-
-<h2>
-Add New Masterpiece
-</h2>
-
-
-
-<input
-id="pname"
-placeholder="Product Name">
-
-
-<br><br>
-
-
-
-<input
-id="price"
-placeholder="Price">
-
-
-
-<br><br>
-
-
-
-<select id="ptype">
-
-
-<option>
-Ring
-</option>
-
-
-<option>
-Necklace
-</option>
-
-
-<option>
-Earrings
-</option>
-
-
-<option>
-Bracelet
-</option>
-
-
-</select>
-
-
-<br><br>
-
-
-
-<input
-id="image"
-placeholder="Image URL">
-
-
-
-<br><br>
-
-
-
-<button class="gold-btn"
-onclick="addProduct()">
-
-Add Product
-
-</button>
-
-
-
-</div>
-
-
-
-
-
-
-
-
-
-<div class="panel">
-
-
-<h2>
-
-Live Inventory
-
-</h2>
-
-
-
-<table>
-
-
-<thead>
-
-<tr>
-
-<th>
-Image
-</th>
-
-
-<th>
-Name
-</th>
-
-
-<th>
-Price
-</th>
-
-
-<th>
-Category
-</th>
-
-
-<th>
-Action
-</th>
-
-
-</tr>
-
-
-</thead>
-
-
-
-
-<tbody id="adminList">
-
-
-</tbody>
-
-
-
-</table>
-
-
-
-</div>
-
-
-
-
-
-
-</div>
-
-
-
-
-
-
-<div class="toast"
-id="toast">
-
-Updated
-
-</div>
-
-
-
-
-
-
-<script src="script.js"></script>
-
-
-
+    <div class="dashboard">
+        <h1 class="title">
+            <i class="fa-solid fa-crown"></i> ADMIN VAULT
+        </h1>
+
+        <div class="panel">
+            <h2>Brand Settings</h2>
+            <input id="brandName" placeholder="Enter Brand Name">
+            <br><br>
+            <button class="gold-btn" onclick="saveBrand()">Update Brand</button>
+        </div>
+
+        <div class="panel">
+            <h2>Add New Masterpiece</h2>
+            <input id="pname" placeholder="Product Name"><br><br>
+            <input id="price" placeholder="Price"><br><br>
+            <select id="ptype">
+                <option>Ring</option>
+                <option>Necklace</option>
+                <option>Earrings</option>
+                <option>Bracelet</option>
+            </select><br><br>
+            <input id="image" placeholder="Image Name (e.g. 1782475435503.png) or Leave Empty">
+            <br><br>
+            <button class="gold-btn" onclick="addProduct()">Add Product</button>
+        </div>
+
+        <div class="panel">
+            <h2>Live Inventory</h2>
+            <div style="overflow-x: auto;">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Image</th>
+                            <th>Name</th>
+                            <th>Price</th>
+                            <th>Category</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody id="adminList"></tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+    <div class="toast" id="toast">Updated</div>
+
+    <script src="script.js"></script>
 </body>
-
 </html>
