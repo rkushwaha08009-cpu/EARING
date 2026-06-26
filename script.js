@@ -2,63 +2,38 @@
 // ROYAL ATELIER MAIN SCRIPT
 // ===============================
 
-// Aapke naye 'images' folder ke mutabik exact paths
+// Aapke images folder ke exact file names ka array
 const GitHubFallbackPhotos = [
-    "./images/1782475435503.png", 
-    "./images/1782475940117.png", 
-    "./images/1782476323492.png",
-    "./images/624746743_18054387368413838_5499993106643338994_n.webp.jpg"
+    "1782475435503.png", 
+    "1782475940117.png", 
+    "1782476323492.png",
+    "624746743_18054387368413838_5499993106643338994_n.webp.jpg"
 ];
 
-// Initial default products agar LocalStorage khali ho toh
+// Initial default products jab pehli baar website kholenge
 const defaultProducts = [
     {
         id: 1,
-        name: "Imperial Diamond Ring",
-        price: 125000,
-        category: "Ring",
-        image: "https://images.unsplash.com/photo-1605100804763-247f67b3557e",
-        tag: "Premium"
-    },
-    {
-        id: 2,
-        name: "Royal Gold Necklace",
-        price: 250000,
-        category: "Necklace",
-        image: "https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f",
-        tag: "Luxury"
-    },
-    {
-        id: 3,
-        name: "Elegant Pearl Earrings",
-        price: 75000,
-        category: "Earrings",
-        image: "https://images.unsplash.com/photo-1535632066927-ab7c9ab60908",
-        tag: "New"
-    },
-    // Aapke folder ki do premium images pehle se store me load kar di hain
-    {
-        id: 4,
         name: "Premium Earring Edition 1",
         price: 85000,
         category: "Earrings",
-        image: GitHubFallbackPhotos[0],
+        image: "./images/1782475435503.png",
         tag: "Exclusive"
     },
     {
-        id: 5,
+        id: 2,
         name: "Premium Earring Edition 2",
         price: 95000,
         category: "Earrings",
-        image: GitHubFallbackPhotos[1],
+        image: "./images/1782475940117.png",
         tag: "Hot"
     }
 ];
 
 let products = JSON.parse(localStorage.getItem("products"));
 
-// FIX: Data sirf pehli baar load hoga, baar-baar refresh par overwrite nahi hoga
-if (!products || products.length === 0) {
+// Agar LocalStorage khali hai toh default data load hoga
+if (!products) {
     products = defaultProducts;
     localStorage.setItem("products", JSON.stringify(products));
 }
@@ -71,6 +46,11 @@ function loadProducts(list = products) {
     let box = document.getElementById("products");
     if (!box) return;
     box.innerHTML = "";
+
+    if (list.length === 0) {
+        box.innerHTML = `<h3 style="text-align:center; width:100%; color:#aaa; padding:40px;">No Products Available In Stock</h3>`;
+        return;
+    }
 
     list.forEach(p => {
         box.innerHTML += `
@@ -90,7 +70,7 @@ function loadProducts(list = products) {
 }
 
 // ===============================
-// SEARCH
+// SEARCH & FILTER
 // ===============================
 
 function searchProduct() {
@@ -98,10 +78,6 @@ function searchProduct() {
     let result = products.filter(p => p.name.toLowerCase().includes(value));
     loadProducts(result);
 }
-
-// ===============================
-// CATEGORY FILTER
-// ===============================
 
 function filterCategory() {
     let cat = document.getElementById("category").value;
@@ -124,43 +100,43 @@ function buyNow(name, price) {
 }
 
 // ===============================
-// ADMIN ADD PRODUCT
+// ADMIN ADD PRODUCT (SMART FILTER)
 // ===============================
 
 function addProduct() {
-    let name = document.getElementById("pname").value;
+    let name = document.getElementById("pname").value.trim();
     let price = Number(document.getElementById("price").value);
     let category = document.getElementById("ptype").value;
-    let image = document.getElementById("image").value.trim();
+    let imageInput = document.getElementById("image").value.trim();
 
-    if (!name || !price) {
-        showToast("Fill Product Name and Price!");
+    if (!name || !price || !imageInput) {
+        showToast("Fill all details first!");
         return;
     }
 
-    // FIX 1: Agar image field khali hai, toh automatic random local photo lagayega
-    if (!image) {
-        let randomIndex = Math.floor(Math.random() * GitHubFallbackPhotos.length);
-        image = GitHubFallbackPhotos[randomIndex];
-    } 
-    // FIX 2: Agar user ne sirf filename daala (jaise 'love1.jpg'), toh automatic path lagayega
-    else if (!image.startsWith("http://") && !image.startsWith("https://") && !image.startsWith("./")) {
-        image = "./images/" + image;
+    // SMART CHECK: Check karega ki input kiya gaya naam hamare images array me hai ya nahi
+    if (!GitHubFallbackPhotos.includes(imageInput)) {
+        showToast("Error: Invalid Image Name! Use exact name from images folder.");
+        alert("Bug Prevention: Yeh image folder me nahi hai! Kripya sahi naam dalein.\n\nAvailable files:\n" + GitHubFallbackPhotos.join("\n"));
+        return; // Yahi se block kar dega, product add nahi hoga
     }
+
+    // Agar naam sahi hai, toh strict path generate karega
+    let finalImagePath = "./images/" + imageInput;
 
     products.push({
         id: Date.now(),
         name,
         price,
         category,
-        image,
+        image: finalImagePath,
         tag: "New"
     });
 
     localStorage.setItem("products", JSON.stringify(products));
-    showToast("Product Added");
+    showToast("Product Added Successfully!");
     
-    // Inputs clear karne ke liye
+    // Reset inputs
     document.getElementById("pname").value = "";
     document.getElementById("price").value = "";
     document.getElementById("image").value = "";
@@ -176,6 +152,11 @@ function loadAdmin() {
     let table = document.getElementById("adminList");
     if (!table) return;
     table.innerHTML = "";
+
+    if (products.length === 0) {
+        table.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#aaa;">Inventory is Empty! All Stock Cleared.</td></tr>`;
+        return;
+    }
 
     products.forEach(p => {
         table.innerHTML += `
@@ -193,7 +174,7 @@ function loadAdmin() {
 }
 
 // ===============================
-// DELETE
+// DELETE SINGLE PRODUCT
 // ===============================
 
 function deleteProduct(id) {
@@ -204,7 +185,20 @@ function deleteProduct(id) {
 }
 
 // ===============================
-// BRAND CHANGE
+// SMART ACTION: CLEAR ALL STOCK
+// ===============================
+
+function clearAllStock() {
+    if (confirm("Kya aap sach me poora STOCK KHALI karna chahte hain? Isse saari images aur items hat jayenge!")) {
+        products = []; // Poora array empty
+        localStorage.setItem("products", JSON.stringify(products)); // Storage saaf
+        loadAdmin();
+        showToast("All Stock Cleared!");
+    }
+}
+
+// ===============================
+// BRAND CHANGE & TOAST
 // ===============================
 
 function saveBrand() {
@@ -213,10 +207,6 @@ function saveBrand() {
     showToast("Brand Updated");
 }
 
-// ===============================
-// TOAST
-// ===============================
-
 function showToast(text) {
     let t = document.getElementById("toast");
     if (!t) return;
@@ -224,7 +214,7 @@ function showToast(text) {
     t.style.display = "block";
     setTimeout(() => {
         t.style.display = "none";
-    }, 2000);
+    }, 2500);
 }
 
 // ===============================
