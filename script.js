@@ -1,40 +1,40 @@
-// Product Data Mapping exactly matching your repo configuration
+// Product Dataset Mapping (Aapki image links directly integrate kar di hain)
 const products = [
     {
         id: 1,
         title: "Classic Golden Drop",
-        price: "₹299",
-        image: "images/1782475435503.png" // Apne folder se copy karke yahan paste karo
+        price: "₹95",
+        image: "images/1782475435503.png"
     },
     {
         id: 2,
         title: "Elegant Diamond Stud",
-        price: "₹349",
-        image: "images/1782475940117.png" // Apne folder se copy karke yahan paste karo
+        price: "₹96",
+        image: "images/1782475901117.png"
     },
     {
         id: 3,
         title: "Royal Jhumka Edition",
-        price: "₹499",
-        image: "images/1782476323492.png" // Apne folder se copy karke yahan paste karo
+        price: "₹99",
+        image: "images/1782476324392.png"
     }
 ];
 
-
-// Tracking details for currently clicked item
+// Tracking state parameters
 let selectedProduct = "";
 let selectedPrice = "";
 let cartCount = 0;
 
-// Dynamic load products on screen
+// Injection and premium initialization function
 function loadProducts() {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
 
-    grid.innerHTML = products.map(product => `
-        <div class="product-card">
+    // Mapping details using sequential luxury transition effects
+    grid.innerHTML = products.map((product, index) => `
+        <div class="product-card" style="animation: premiumFadeIn ${0.4 + index * 0.15}s ease forwards; opacity: 0;">
             <div class="product-img-container">
-                <img src="${product.image}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/300x350?text=Earring'">
+                <img src="${product.image}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/300x350?text=Premium+Earring'">
             </div>
             <div class="product-info">
                 <h3 class="product-title">${product.title}</h3>
@@ -47,48 +47,55 @@ function loadProducts() {
     `).join('');
 }
 
-// Modal handling functions
+// Inline luxury dynamic animation parser
+const dynamicStyles = document.createElement('style');
+dynamicStyles.innerHTML = `
+    @keyframes premiumFadeIn {
+        from { opacity: 0; transform: translateY(40px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+`;
+document.head.appendChild(dynamicStyles);
+
+// Seamless checkout Modal controls
 function openModal(name, price) {
     selectedProduct = name;
     selectedPrice = price;
     
-    // Display chosen product in modal
-    document.getElementById('modal-product-display').innerText = `${name} (${price})`;
+    document.getElementById('modal-product-display').innerText = `${name} — ${price}`;
     document.getElementById('orderModal').style.display = "block";
 }
 
 function closeModal() {
     document.getElementById('orderModal').style.display = "none";
-    // Clear inputs
     document.getElementById('userName').value = "";
     document.getElementById('userAddress').value = "";
 }
 
-// Main logic to dispatch order seamlessly via WhatsApp
+// WhatsApp instant billing system routing
 function sendOrder() {
     const name = document.getElementById('userName').value.trim();
     const address = document.getElementById('userAddress').value.trim();
-    const phoneNumber = "917507726901"; // Target Business WhatsApp Line
+    const phoneNumber = "917507726901"; // Target receiver number
 
     if(name && address) {
-        // Increment cart counter seamlessly for dynamic experience
+        // Upgrade dynamic header cart indicators
         cartCount++;
-        const countElement = document.getElementById('cart-count');
-        if(countElement) countElement.innerText = cartCount;
+        const badge = document.getElementById('cart-count');
+        if(badge) badge.innerText = cartCount;
 
-        // Structured order format
-        const message = `✨ *NEW ORDER RECEIVED* ✨\n\n👤 *Customer Name:* ${name}\n📍 *Delivery Address:* ${address}\n\n📦 *Item Details:* ${selectedProduct}\n💰 *Price Total:* ${selectedPrice}\n\nPlease confirm the shipment schedule! 🤝`;
+        // Structured enterprise dispatch message formatting
+        const message = `✨ *NEW ORDER RECEIVED* ✨\n\n👤 *Customer Name:* ${name}\n📍 *Delivery Address:* ${address}\n\n📦 *Product Ordered:* ${selectedProduct}\n💰 *Price Total:* ${selectedPrice}\n\nPlease confirm my order order dispatch schedule! 🫂💞`;
         
-        // Finalizing secure encoding link
+        // Securely passing text parameters into secure API link
         const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
         
-        // Fire Redirection
         window.open(whatsappUrl, '_blank');
         closeModal();
     } else {
-        alert("Bhai, order confirm karne ke liye Name aur Address dono fill kijiye! 😊");
+        alert("Bhai, order process karne ke liye Name aur Address fill kijiye! 😊");
     }
 }
 
-// Fire execution upon completely drawing content layout
+// Initializing execution loop upon loading DOM architecture
 document.addEventListener('DOMContentLoaded', loadProducts);
