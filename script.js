@@ -1,36 +1,76 @@
-// TODO: Aapka Firebase Config yahan sabse upar paste karein:
-// const firebaseConfig = { ... };
-// firebase.initializeApp(firebaseConfig);
+// ==========================================
+// 1. FIREBASE CONFIGURATION (Yahan apni details daalein)
+// ==========================================
+const firebaseConfig = {
+    apiKey: "YOUR_API_KEY",
+    authDomain: "YOUR_AUTH_DOMAIN",
+    databaseURL: "YOUR_DATABASE_URL", // Yeh zaroori hai Realtime DB ke liye
+    projectId: "YOUR_PROJECT_ID",
+    storageBucket: "YOUR_STORAGE_BUCKET",
+    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
+    appId: "YOUR_APP_ID"
+};
+
+// Initialize Firebase safely
+try {
+    if (!firebase.apps.length) {
+        firebase.initializeApp(firebaseConfig);
+    }
+} catch (e) {
+    console.error("Firebase initialization failed:", e);
+    alert("Firebase Init Fail ho gaya! Check your credentials.");
+}
 
 let products = [];
 
 // Real-time Database se listener connect karna
-firebase.database().ref('products').on('value', (snapshot) => {
-    products = [];
-    snapshot.forEach((childSnapshot) => {
-        let data = childSnapshot.val();
-        data.dbKey = childSnapshot.key; // Auto delete key generation
-        products.push(data);
+try {
+    firebase.database().ref('products').on('value', (snapshot) => {
+        products = [];
+        snapshot.forEach((childSnapshot) => {
+            let data = childSnapshot.val();
+            data.dbKey = childSnapshot.key; // Auto delete key generation
+            products.push(data);
+        });
+        
+        // Dono interfaces (User View & Admin View) ko live update fail karna
+        if (document.getElementById("products")) {
+            displayProducts(products);
+        }
+        if (document.getElementById("adminList")) {
+            loadAdmin();
+        }
+    }, (error) => {
+        console.error("Database listener error:", error);
     });
-    
-    // Dono interfaces (User View & Admin View) ko live update fail karna
-    if (document.getElementById("products")) {
-        displayProducts(products);
-    }
-    if (document.getElementById("adminList")) {
-        loadAdmin();
-    }
-});
+} catch (err) {
+    console.error("Database binding error:", err);
+}
 
+// ==========================================
+// 2. ADD PRODUCT TO FIREBASE
+// ==========================================
 function addProduct() {
-    let name = document.getElementById("pname").value.trim();
-    let price = document.getElementById("price").value.trim();
-    let category = document.getElementById("ptype").value;
-    let filename = document.getElementById("imageFilename").value.trim();
+    console.log("Button clicked! addProduct execution started...");
+
+    let nameElement = document.getElementById("pname");
+    let priceElement = document.getElementById("price");
+    let categoryElement = document.getElementById("ptype");
+    let filenameElement = document.getElementById("imageFilename");
+
+    if (!nameElement || !priceElement || !filenameElement) {
+        alert("CRITICAL ERROR: HTML Elements missing inside script!");
+        return;
+    }
+
+    let name = nameElement.value.trim();
+    let price = priceElement.value.trim();
+    let category = categoryElement.value;
+    let filename = filenameElement.value.trim();
 
     // Basic Validation
     if (!name || !price || !filename) {
-        showToast("Please fill all fields! ❌");
+        if(typeof showToast === "function") showToast("Please fill all fields! ❌");
         alert("Saare boxes bharna zaroori hai!");
         return;
     }
@@ -47,7 +87,7 @@ function addProduct() {
 
     console.log("Pushing data to Firebase:", newProduct);
 
-    // DIRECT CLOUD PUSH (Bypassing faulty browser-side validation loops)
+    // DIRECT CLOUD PUSH
     firebase.database().ref('products').push(newProduct)
         .then(() => {
             alert("Product Linked Successfully! ✅ Data sent to Firebase.");
@@ -64,8 +104,9 @@ function addProduct() {
         });
 }
 
-
-// 2. DISPLAY PRODUCTS IN USER PLATFORM (index.html)
+// ==========================================
+// 3. DISPLAY PRODUCTS IN USER PLATFORM (index.html)
+// ==========================================
 function displayProducts(productsList) {
     let grid = document.getElementById("products");
     if (!grid) return;
@@ -79,7 +120,6 @@ function displayProducts(productsList) {
     productsList.forEach(p => {
         grid.innerHTML += `
             <div class="card">
-                <!-- Direct folder image injection -->
                 <img src="${p.image}" alt="${p.name}" onerror="this.src='./images/fallback-default.png'">
                 <div class="card-info">
                     <h3>${p.name}</h3>
@@ -91,7 +131,9 @@ function displayProducts(productsList) {
     });
 }
 
-// 3. LOAD ADMIN DASHBOARD UTILITIES (admin.html)
+// ==========================================
+// 4. LOAD ADMIN DASHBOARD UTILITIES (admin.html)
+// ==========================================
 function loadAdmin() {
     let table = document.getElementById("adminList");
     let totalItemsEl = document.getElementById("statTotalItems");
@@ -129,13 +171,14 @@ function loadAdmin() {
         `;
     });
 
-    // Update Dashboard Stats Counters
     if(totalItemsEl) totalItemsEl.innerText = products.length;
     if(totalValueEl) totalValueEl.innerText = "₹" + totalValue.toLocaleString("en-IN");
     if(activeCatsEl) activeCatsEl.innerText = categoriesSet.size;
 }
 
-// 4. DELETE SINGLE MASTERPIECE
+// ==========================================
+// 5. DELETE & CLEANUP UTILITIES
+// ==========================================
 function deleteProduct(key) {
     if(confirm("Remove this masterpiece from showcase?")) {
         firebase.database().ref('products/' + key).remove()
@@ -144,7 +187,6 @@ function deleteProduct(key) {
     }
 }
 
-// 5. EMERGENCY WIPE ALL INVENTORY
 function clearAllStock() {
     if (confirm("🚨 DANGER: Are you absolutely sure you want to WIPE out all stock from the cloud database?")) {
         firebase.database().ref('products').remove()
@@ -154,7 +196,6 @@ function clearAllStock() {
     }
 }
 
-// 6. BRAND MANAGER UTILITY
 function saveBrand() {
     let name = document.getElementById("brandName").value.trim();
     if(name) {
@@ -162,7 +203,6 @@ function saveBrand() {
     }
 }
 
-// TOAST TRIGGER
 function showToast(msg) {
     let t = document.getElementById("toast");
     if(t) {
@@ -172,7 +212,6 @@ function showToast(msg) {
     }
 }
 
-// USER SEARCH & FILTER CONTROLS (Bypass routing)
 function searchProduct() {
     let query = document.getElementById("search").value.toLowerCase();
     let filtered = products.filter(p => p.name.toLowerCase().includes(query));
