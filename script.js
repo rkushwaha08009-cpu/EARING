@@ -10,13 +10,13 @@ const products = [
         id: 2,
         title: "Elegant Diamond Stud",
         price: "₹349",
-        image: "images/1782475901117.png" // Apne folder se copy karke yahan paste karo
+        image: "images/1782475940117.png" // Apne folder se copy karke yahan paste karo
     },
     {
         id: 3,
         title: "Royal Jhumka Edition",
         price: "₹499",
-        image: "images/1782476324392.png" // Apne folder se copy karke yahan paste karo
+        image: "images/1782476323492.png" // Apne folder se copy karke yahan paste karo
     }
 ];
 
