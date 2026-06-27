@@ -4,21 +4,22 @@ const products = [
         id: 1,
         title: "Classic Golden Drop",
         price: "₹299",
-        image: "images/1782475435503.png"
+        image: "images/1782475435503.png" // Apne folder se copy karke yahan paste karo
     },
     {
         id: 2,
         title: "Elegant Diamond Stud",
         price: "₹349",
-        image: "images/1782475901117.png"
+        image: "images/1782475901117.png" // Apne folder se copy karke yahan paste karo
     },
     {
         id: 3,
         title: "Royal Jhumka Edition",
         price: "₹499",
-        image: "images/1782476324392.png"
+        image: "images/1782476324392.png" // Apne folder se copy karke yahan paste karo
     }
 ];
+
 
 // Tracking details for currently clicked item
 let selectedProduct = "";
