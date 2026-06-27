@@ -3,14 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>EARING | Premium Collection</title>
+    <title>EARING | Luxury Collection</title>
     <link rel="stylesheet" href="style.css">
-    <!-- FontAwesome Icons for Beautiful UX -->
+    <!-- FontAwesome Icons for modern UX -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Navbar -->
+    <!-- Premium Glass Navbar -->
     <nav class="navbar">
         <div class="logo">EARING</div>
         <div class="nav-icons">
@@ -21,23 +21,24 @@
         </div>
     </nav>
 
-    <!-- Hero Banner -->
+    <!-- Luxury Interactive Hero Banner -->
     <header class="hero-section">
         <div class="hero-content">
-            <h1>Premium Earrings At Lower Price</h1>
-            <p>Elevate your style with our exclusive handcrafted collection.</p>
+            <h1>Premium Earring</h1>
+            <p>Luxury at your fingertips. Discover the art of elegance at lower prices.</p>
+            <a href="#product-grid" class="shop-now-btn">Explore Shop <i class="fas fa-arrow-down"></i></a>
         </div>
     </header>
 
-    <!-- Main Content (Product Grid) -->
+    <!-- Main Content (Product Grid Section) -->
     <main class="container">
-        <h2 class="section-title">Our Exclusive Collection</h2>
+        <h2 class="section-title">Our Exclusive Pieces</h2>
         <div id="product-grid" class="product-grid">
-            <!-- Products will be injected dynamically by script.js -->
+            <!-- Dynamic interactive cards will be injected here by script.js -->
         </div>
     </main>
 
-    <!-- Connect & Social Section -->
+    <!-- Connect & Social Contacts Section -->
     <section class="contact-section">
         <div class="container">
             <h2 class="section-title">Connect With Us</h2>
@@ -66,18 +67,19 @@
         </div>
     </section>
 
-    <!-- Smart Order Modal Form -->
+    <!-- Premium Blurred Order Modal Form -->
     <div id="orderModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
             <i class="fab fa-whatsapp modal-wa-icon"></i>
             <h2>Complete Your Order</h2>
-            <p id="modal-product-display" style="font-weight: 600; color: #d4af37; margin-bottom: 15px;"></p>
+            <p id="modal-product-display"></p>
+            
             <div class="input-group">
                 <input type="text" id="userName" placeholder="Your Name" required>
             </div>
             <div class="input-group">
-                <input type="text" id="userAddress" placeholder="Your Delivery Address (Full Address)" required>
+                <input type="text" id="userAddress" placeholder="Your Full Delivery Address" required>
             </div>
             <button class="modal-buy-btn" onclick="sendOrder()">
                 Confirm & Order via WhatsApp
@@ -85,7 +87,7 @@
         </div>
     </div>
 
-    <!-- Modern Footer -->
+    <!-- Luxury Footer -->
     <footer>
         <p>&copy; 2026 EARING. Powered by Raj. All Rights Reserved.</p>
     </footer>
