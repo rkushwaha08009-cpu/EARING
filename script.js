@@ -4,21 +4,28 @@ const products = [
         id: 1,
         title: "Classic Golden Drop",
         price: "₹95",
-        image: "images/1782475435503.png"
+        image: "images/1.png" // Ekdum simple path
     },
     {
         id: 2,
         title: "Elegant Diamond Stud",
         price: "₹96",
-        image: "images/1782475901117.png" // Agar ye load na ho, toh ise rename karke '2.png' kar dena repo me
+        image: "images/2.png" // Ekdum simple path
     },
     {
         id: 3,
         title: "Royal Jhumka Edition",
-        price: "₹99",
-        image: "images/1782476324392.png" // Screenshot me iska naam '624746743...' se shuru ho raha hai!
+        price: "₹96",
+        image: "images/3.png" // Ekdum simple path
+    },
+    {
+        id: 4,
+        title: "Stylish Edition",
+        price: "₹93",
+        image: "images/4.png" // Ekdum simple path
     }
 ];
+
 
 // Tracking state parameters
 let selectedProduct = "";
