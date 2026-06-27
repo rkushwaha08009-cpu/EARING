@@ -9,10 +9,12 @@
 </head>
 <body>
 
+    <!-- LOADER -->
     <div class="loader" id="loader">
         <h1>ROYAL ATELIER</h1>
     </div>
 
+    <!-- NAVBAR -->
     <nav>
         <div class="logo">ROYAL ATELIER</div>
         <div>
@@ -23,6 +25,7 @@
         </div>
     </nav>
 
+    <!-- HERO -->
     <section class="hero" id="home">
         <div>
             <h1>THE ART OF LUXURY</h1>
@@ -31,6 +34,7 @@
         </div>
     </section>
 
+    <!-- COLLECTION -->
     <section class="section" id="collection">
         <h2 class="title">Masterpiece Collection</h2>
         <div class="controls">
@@ -43,9 +47,12 @@
                 <option>Bracelet</option>
             </select>
         </div>
+        
+        <!-- Grid entirely empty. Data will strictly load from Firebase script path logic -->
         <div class="grid" id="products"></div>
     </section>
 
+    <!-- ABOUT -->
     <section class="section" id="about">
         <h2 class="title">Our Legacy</h2>
         <p style="text-align:center; max-width:800px; margin:auto; line-height:2; color:#bbb;">
@@ -53,6 +60,7 @@
         </p>
     </section>
 
+    <!-- CONTACT -->
     <section class="section" id="contact">
         <h2 class="title">Private Consultation</h2>
         <div style="text-align: center;">
@@ -64,9 +72,11 @@
         © 2026 Royal Atelier. Luxury Jewellery House.
     </footer>
 
+    <!-- FIREBASE COMPAT LIBRARIES (CDN) -->
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-database-compat.js"></script>
 
+    <!-- MAIN APP SCRIPT -->
     <script src="script.js"></script>
 </body>
 </html>
