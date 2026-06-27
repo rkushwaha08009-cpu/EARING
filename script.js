@@ -10,13 +10,13 @@ const products = [
         id: 2,
         title: "Elegant Diamond Stud",
         price: "₹96",
-        image: "images/1782475901117.png"
+        image: "images/1782475901117.png" // Agar ye load na ho, toh ise rename karke '2.png' kar dena repo me
     },
     {
         id: 3,
         title: "Royal Jhumka Edition",
         price: "₹99",
-        image: "images/1782476324392.png"
+        image: "images/1782476324392.png" // Screenshot me iska naam '624746743...' se shuru ho raha hai!
     }
 ];
 
@@ -34,7 +34,8 @@ function loadProducts() {
     grid.innerHTML = products.map((product, index) => `
         <div class="product-card" style="animation: premiumFadeIn ${0.4 + index * 0.15}s ease forwards; opacity: 0;">
             <div class="product-img-container">
-                <img src="${product.image}" alt="${product.title}" onerror="this.src='https://via.placeholder.com/300x350?text=Premium+Earring'">
+                <!-- Isme maine ek automatic backup image bitha di hai agar path galat ho toh bhi broken icon nahi dikhega -->
+                <img src="${product.image}" alt="${product.title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1617038220319-276d3c1626c9?q=80&w=500';">
             </div>
             <div class="product-info">
                 <h3 class="product-title">${product.title}</h3>
