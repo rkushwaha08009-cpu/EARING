@@ -22,7 +22,7 @@ const products = [
         id: 4,
         title: "Stylish Earing",
         price: "₹86",
-        image: "images/4.png
+        image: "images/4.png"
     }      
 ];
 
