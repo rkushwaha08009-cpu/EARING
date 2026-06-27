@@ -22,13 +22,25 @@ body {
     overflow-x: hidden;
 }
 
+/* Announcement Ribbon */
+.announcement-bar {
+    background: var(--gold);
+    color: black;
+    font-size: 11px;
+    font-weight: 700;
+    text-align: center;
+    padding: 8px 10px;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+}
+
 /* Premium Navigation Glassmorphism */
 .navbar {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 20px 8%;
-    background: rgba(10, 10, 10, 0.75);
+    background: rgba(10, 10, 10, 0.85);
     backdrop-filter: blur(15px);
     -webkit-backdrop-filter: blur(15px);
     position: sticky;
@@ -66,20 +78,30 @@ body {
     border-radius: 50%;
 }
 
-/* Luxury Video/Image Alternate Hero Section */
+/* Luxury Hero Section */
 .hero-section {
-    height: 65vh;
+    height: 70vh;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
-    background: linear-gradient(rgba(0,0,0,0.7), rgba(0,0,0,0.7)), 
+    background: linear-gradient(rgba(0,0,0,0.75), rgba(0,0,0,0.75)), 
                 url('https://images.unsplash.com/photo-1617038220319-276d3c1626c9?q=80&w=2000') center/cover;
     padding: 0 20px;
 }
 
+.hero-subtitle {
+    color: var(--gold);
+    font-size: 13px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 4px;
+    display: block;
+    margin-bottom: 10px;
+}
+
 .hero-content h1 {
-    font-size: 3.8rem;
+    font-size: 4rem;
     font-weight: 800;
     letter-spacing: 4px;
     text-transform: uppercase;
@@ -93,7 +115,7 @@ body {
     font-size: 1.2rem;
     color: var(--text-gray);
     max-width: 600px;
-    margin: 0 auto 30px;
+    margin: 0 auto 35px;
     font-weight: 300;
 }
 
@@ -102,20 +124,21 @@ body {
     background: transparent;
     color: white;
     border: 2px solid var(--gold);
-    padding: 12px 35px;
+    padding: 14px 40px;
     border-radius: 50px;
     font-weight: 600;
     text-decoration: none;
     transition: all 0.4s ease;
     text-transform: uppercase;
-    font-size: 14px;
-    letter-spacing: 1px;
+    font-size: 13px;
+    letter-spacing: 1.5px;
 }
 
 .shop-now-btn:hover {
     background: var(--gold);
     color: var(--dark);
-    box-shadow: 0 0 20px rgba(212, 175, 55, 0.4);
+    box-shadow: 0 0 25px rgba(212, 175, 55, 0.5);
+    transform: translateY(-3px);
 }
 
 /* Layout Elements */
@@ -127,7 +150,7 @@ body {
 
 .section-title {
     text-align: center;
-    margin: 50px 0 40px;
+    margin: 60px 0 40px;
     font-size: 32px;
     font-weight: 700;
     letter-spacing: 1px;
@@ -148,7 +171,7 @@ body {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
     gap: 40px;
-    margin-bottom: 80px;
+    margin-bottom: 40px;
 }
 
 /* Glassmorphic Cards */
@@ -177,7 +200,6 @@ body {
     border-radius: 15px;
     overflow: hidden;
     background: #141414;
-    position: relative;
 }
 
 .product-img-container img {
@@ -194,16 +216,12 @@ body {
 .product-info {
     padding: 20px 5px 5px;
     text-align: center;
-    display: flex;
-    flex-direction: column;
-    flex-grow: 1;
 }
 
 .product-title {
     font-size: 19px;
     font-weight: 600;
     margin-bottom: 8px;
-    letter-spacing: 0.5px;
 }
 
 .product-price {
@@ -223,7 +241,6 @@ body {
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s;
-    margin-top: auto;
     width: 100%;
 }
 
@@ -240,62 +257,161 @@ body {
     box-shadow: 0 5px 15px rgba(212, 175, 55, 0.3);
 }
 
-/* Premium Social Section */
-.contact-section {
-    padding: 70px 0;
+/* Trust Section Badges */
+.trust-section {
     background: #0d0d0d;
+    padding: 50px 0;
     border-top: 1px solid var(--glass-border);
+    border-bottom: 1px solid var(--glass-border);
+    margin: 60px 0;
 }
 
-.contact-grid {
-    display: flex;
-    justify-content: center;
-    gap: 25px;
-    flex-wrap: wrap;
-    margin-top: 10px;
-}
-
-.contact-card {
-    background: var(--card-bg);
-    border: 1px solid var(--glass-border);
-    padding: 30px 40px;
-    border-radius: 16px;
-    text-decoration: none;
-    color: white;
-    transition: all 0.3s ease;
-    min-width: 240px;
+.trust-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 30px;
     text-align: center;
 }
 
-.contact-card i {
-    font-size: 36px;
+.trust-card i {
+    font-size: 30px;
+    color: var(--gold);
+    margin-bottom: 12px;
+}
+
+.trust-card h4 {
+    font-size: 18px;
+    margin-bottom: 5px;
+    font-weight: 600;
+}
+
+.trust-card p {
+    font-size: 13px;
+    color: var(--text-gray);
+}
+
+/* FAQ Interactive Section */
+.faq-accordion {
+    max-width: 700px;
+    margin: 0 auto 60px;
+}
+
+.faq-accordion details {
+    background: var(--card-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: 12px;
     margin-bottom: 15px;
+    padding: 16px 20px;
+    transition: all 0.3s;
+}
+
+.faq-accordion details[open] {
+    border-color: var(--gold);
+    box-shadow: 0 5px 15px rgba(212,175,55,0.05);
+}
+
+.faq-accordion summary {
+    font-weight: 600;
+    font-size: 16px;
+    cursor: pointer;
+    list-style: none;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    outline: none;
+    color: white;
+}
+
+.faq-accordion summary::-webkit-details-marker { display: none; }
+
+.faq-accordion details[open] summary i {
+    transform: rotate(45deg);
+    color: var(--gold);
+}
+
+.faq-accordion summary i {
+    font-size: 14px;
+    transition: transform 0.3s;
+    color: var(--text-gray);
+}
+
+.faq-accordion p {
+    margin-top: 12px;
+    font-size: 14px;
+    color: var(--text-gray);
+    line-height: 1.6;
+    border-top: 1px solid rgba(255,255,255,0.05);
+    padding-top: 12px;
+    text-align: left;
+}
+
+/* Premium Social Section Fixed Rows */
+.contact-section {
+    padding: 60px 0;
+    background: #0a0a0a;
+    border-top: 1px solid var(--glass-border);
+    width: 100%;
+}
+
+.contact-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 20px;
+    width: 100%;
+    max-width: 1100px;
+    margin: 0 auto;
+    padding: 10px 20px;
+}
+
+.contact-card {
+    background: var(--card-bg) !important;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid var(--glass-border) !important;
+    padding: 25px 20px !important;
+    border-radius: 16px !important;
+    text-decoration: none !important;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    transition: all 0.3s ease-in-out;
+}
+
+.contact-card, 
+.contact-card h3, 
+.contact-card p, 
+.contact-card:visited {
+    color: white !important;
+}
+
+.contact-card i {
+    font-size: 32px;
+    margin-bottom: 12px;
 }
 
 .contact-card h3 {
     font-size: 18px;
-    margin-bottom: 6px;
     font-weight: 600;
+    margin-bottom: 6px;
+    letter-spacing: 0.5px;
 }
 
 .contact-card p {
     font-size: 14px;
-    color: var(--text-gray);
+    color: var(--text-gray) !important;
+    opacity: 0.8;
 }
 
-.contact-card:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(255,255,255,0.03);
-}
+.contact-card.whatsapp:hover { border-color: #25D366 !important; box-shadow: 0 8px 20px rgba(37, 211, 102, 0.15); transform: translateY(-5px); }
+.contact-card.whatsapp i { color: #25D366 !important; }
 
-.contact-card.whatsapp:hover { border-color: #25D366; box-shadow: 0 5px 15px rgba(37, 211, 102, 0.2); }
-.contact-card.whatsapp i { color: #25D366; }
+.contact-card.instagram:hover { border-color: #E1306C !important; box-shadow: 0 8px 20px rgba(225, 48, 108, 0.15); transform: translateY(-5px); }
+.contact-card.instagram i { color: #E1306C !important; }
 
-.contact-card.instagram:hover { border-color: #E1306C; box-shadow: 0 5px 15px rgba(225, 48, 108, 0.2); }
-.contact-card.instagram i { color: #E1306C; }
-
-.contact-card.call:hover { border-color: #007bff; box-shadow: 0 5px 15px rgba(0, 123, 255, 0.2); }
-.contact-card.call i { color: #007bff; }
+.contact-card.call:hover { border-color: #007bff !important; box-shadow: 0 8px 20px rgba(0, 123, 255, 0.15); transform: translateY(-5px); }
+.contact-card.call i { color: #007bff !important; }
 
 /* Ultra-Premium Modal popups */
 .modal {
@@ -315,7 +431,7 @@ body {
     background: #121212;
     border: 1px solid var(--glass-border);
     width: 90%;
-    max-width: 420px;
+    max-width: 410px;
     margin: 12% auto;
     padding: 35px 30px;
     border-radius: 24px;
@@ -341,7 +457,6 @@ body {
     color: var(--gold);
     margin-bottom: 20px;
     font-size: 15px;
-    letter-spacing: 0.5px;
 }
 
 .input-group { margin: 15px 0; }
@@ -349,18 +464,47 @@ body {
 .modal-content input {
     width: 100%;
     padding: 14px 18px;
-    background: #1a1a1a;
+    background: #141414 !important;
     border: 1px solid var(--glass-border);
     border-radius: 12px;
     font-size: 14px;
-    color: white;
+    color: white !important;
+    margin-bottom: 15px;
     outline: none;
     transition: all 0.3s;
 }
 
 .modal-content input:focus {
     border-color: var(--gold);
-    background: #222;
+    background: #222 !important;
+}
+
+.modal-content input::placeholder {
+    color: #666;
+}
+
+/* Premium Terms Checkbox Grid Alignment */
+.terms-container {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin: 15px 0 22px;
+    text-align: left;
+    font-size: 12.5px;
+    color: #aaa;
+}
+
+.terms-container input {
+    width: auto !important;
+    margin-top: 3px;
+    cursor: pointer;
+    accent-color: var(--gold);
+}
+
+.terms-container label {
+    cursor: pointer;
+    line-height: 1.4;
+    user-select: none;
 }
 
 .modal-buy-btn {
@@ -394,13 +538,13 @@ body {
 
 .close-btn:hover { color: white; }
 
-/* Luxury Footer */
+/* Premium Footer Alignment */
 footer {
     text-align: center;
-    padding: 35px;
+    padding: 30px 20px;
     background: #050505;
-    color: #555;
-    font-size: 13px;
-    border-top: 1px solid rgba(255,255,255,0.02);
-    letter-spacing: 0.5px;
+    color: #555 !important;
+    font-size: 12px;
+    border-top: 1px solid rgba(255, 255, 255, 0.02);
+    width: 100%;
 }
