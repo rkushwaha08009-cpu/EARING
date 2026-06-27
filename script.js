@@ -1,231 +1,182 @@
-// ==========================================
-// FIREBASE CONFIGURATION & INITIALIZATION
-// ==========================================
-const firebaseConfig = {
-    apiKey: "AIzaSyB9SeoDcKu1_WhaFIEYXI4IrcMM0mOQiOY",
-    authDomain: "earing-bfc75.firebaseapp.com",
-    databaseURL: "https://earing-bfc75-default-rtdb.firebaseio.com",
-    projectId: "earing-bfc75",
-    storageBucket: "earing-bfc75.firebasestorage.app",
-    messagingSenderId: "425149311395",
-    appId: "1:425149311395:web:c1df82b87dd66d4cf79216",
-    measurementId: "G-3Q7LMPM2ZW"
-};
+// TODO: Aapka Firebase Config yahan sabse upar paste karein:
+// const firebaseConfig = { ... };
+// firebase.initializeApp(firebaseConfig);
 
-// Initialize Firebase using compat SDK
-firebase.initializeApp(firebaseConfig);
-const database = firebase.database();
-
-// Global array for live sync data
 let products = [];
 
-// Aapke 'images' folder ke exact file names ki validation list
-const GitHubFallbackPhotos = [
-    "1782475435503.png", 
-    "1782475940117.png", 
-    "1782476323492.png",
-    "624746743_18054387368413838_5499993106643338994_n.webp.jpg"
-];
-
-// ==========================================
-// REAL-TIME DATABASE SYNC
-// ==========================================
-database.ref("products").on("value", (snapshot) => {
-    const data = snapshot.val();
+// Real-time Database se listener connect karna
+firebase.database().ref('products').on('value', (snapshot) => {
+    products = [];
+    snapshot.forEach((childSnapshot) => {
+        let data = childSnapshot.val();
+        data.dbKey = childSnapshot.key; // Auto delete key generation
+        products.push(data);
+    });
     
-    if (data) {
-        products = Object.keys(data).map(key => ({
-            dbKey: key, // Live cloud ID for deletion
-            ...data[key]
-        }));
-    } else {
-        products = [];
+    // Dono interfaces (User View & Admin View) ko live update fail karna
+    if (document.getElementById("products")) {
+        displayProducts(products);
     }
-
-    // Live update triggers automatically on all sessions/tabs
-    loadProducts();
-    loadAdmin();
+    if (document.getElementById("adminList")) {
+        loadAdmin();
+    }
 });
 
-// ==========================================
-// LOAD STORE (CUSTOMER INTERFACE)
-// ==========================================
-function loadProducts(list = products) {
-    let box = document.getElementById("products");
-    if (!box) return;
-    box.innerHTML = "";
+// 1. ADD PRODUCT WITH AUTOMATIC LOCAL FOLDER ROUTING
+function addProduct() {
+    let name = document.getElementById("pname").value.trim();
+    let price = document.getElementById("price").value.trim();
+    let category = document.getElementById("ptype").value;
+    let filename = document.getElementById("imageFilename").value.trim();
 
-    if (list.length === 0) {
-        box.innerHTML = `<h3 style="text-align:center; width:100%; color:#aaa; padding:40px;">No Products Available In Stock</h3>`;
+    if (!name || !price || !filename) {
+        showToast("Please fill all fields!");
         return;
     }
 
-    list.forEach(p => {
-        box.innerHTML += `
+    // STYLING DIRECTORY RESOLVER
+    // Agar aapne "love.png" daala, toh ye automatic use "./images/love.png" bana dega
+    let finalImagePath = "./images/" + filename;
+
+    let newProduct = {
+        name: name,
+        price: Number(price),
+        category: category,
+        image: finalImagePath
+    };
+
+    // Firebase database push setup
+    firebase.database().ref('products').push(newProduct)
+        .then(() => {
+            showToast("Product Linked Successfully! ✅");
+            // Clear inputs
+            document.getElementById("pname").value = "";
+            document.getElementById("price").value = "";
+            document.getElementById("imageFilename").value = "";
+        })
+        .catch((error) => console.error("Database Error:", error));
+}
+
+// 2. DISPLAY PRODUCTS IN USER PLATFORM (index.html)
+function displayProducts(productsList) {
+    let grid = document.getElementById("products");
+    if (!grid) return;
+    grid.innerHTML = "";
+
+    if (productsList.length === 0) {
+        grid.innerHTML = `<p style="grid-column: 1/-1; text-align: center; color: #bbb;">No products available in this showcase.</p>`;
+        return;
+    }
+
+    productsList.forEach(p => {
+        grid.innerHTML += `
             <div class="card">
-                <div class="badge">${p.tag || "New"}</div>
-                <img src="${p.image}" alt="${p.name}">
-                <div class="info">
-                    <h2>${p.name}</h2>
-                    <div class="price">₹${p.price.toLocaleString("en-IN")}</div>
-                    <button class="gold-btn" onclick="buyNow('${p.name}', ${p.price})">
-                        <i class="fa-brands fa-whatsapp"></i> Buy Now
-                    </button>
+                <!-- Direct folder image injection -->
+                <img src="${p.image}" alt="${p.name}" onerror="this.src='./images/fallback-default.png'">
+                <div class="card-info">
+                    <h3>${p.name}</h3>
+                    <p class="price">₹${p.price.toLocaleString("en-IN")}</p>
+                    <span class="tag">${p.category}</span>
                 </div>
             </div>
         `;
     });
 }
 
-// ==========================================
-// SEARCH & FILTER
-// ==========================================
-function searchProduct() {
-    let value = document.getElementById("search").value.toLowerCase();
-    let result = products.filter(p => p.name.toLowerCase().includes(value));
-    loadProducts(result);
-}
-
-function filterCategory() {
-    let cat = document.getElementById("category").value;
-    if (cat === "all") {
-        loadProducts(products);
-    } else {
-        let result = products.filter(p => p.category === cat);
-        loadProducts(result);
-    }
-}
-
-// ==========================================
-// WHATSAPP ORDER
-// ==========================================
-function buyNow(name, price) {
-    let number = "919876543210";
-    let msg = `Hello, I am interested in ${name}\nPrice ₹${price}`;
-    window.open("https://wa.me/" + number + "?text=" + encodeURIComponent(msg));
-}
-
-// ==========================================
-// ADMIN ADD PRODUCT (SMART FILTER FOR IMAGES FOLDER)
-// ==========================================
-function addProduct() {
-    let name = document.getElementById("pname").value.trim();
-    let price = Number(document.getElementById("price").value);
-    let category = document.getElementById("ptype").value;
-    let imageInput = document.getElementById("image").value.trim();
-
-    if (!name || !price || !imageInput) {
-        showToast("Fill all details first!");
-        return;
-    }
-
-    // STRICT FOLDER CHECK
-    if (!GitHubFallbackPhotos.includes(imageInput)) {
-        showToast("Error: Invalid Image Name!");
-        alert("Bug Prevention: Yeh image folder me nahi hai! Kripya sahi naam dalein.\n\nAvailable files:\n" + GitHubFallbackPhotos.join("\n"));
-        return;
-    }
-
-    let finalImagePath = "./images/" + imageInput;
-
-    const newProduct = {
-        id: Date.now(),
-        name: name,
-        price: price,
-        category: category,
-        image: finalImagePath,
-        tag: "New"
-    };
-
-    // Push to Firebase Cloud
-    database.ref("products").push(newProduct)
-        .then(() => {
-            showToast("Product Added to Cloud Store!");
-            document.getElementById("pname").value = "";
-            document.getElementById("price").value = "";
-            document.getElementById("image").value = "";
-        })
-        .catch((error) => {
-            console.error("Firebase Error: ", error);
-            showToast("Cloud connection error!");
-        });
-}
-
-// ==========================================
-// ADMIN TABLE LIVE INVENTORY
-// ==========================================
+// 3. LOAD ADMIN DASHBOARD UTILITIES (admin.html)
 function loadAdmin() {
     let table = document.getElementById("adminList");
+    let totalItemsEl = document.getElementById("statTotalItems");
+    let totalValueEl = document.getElementById("statTotalValue");
+    let activeCatsEl = document.getElementById("statActiveCats");
+
     if (!table) return;
     table.innerHTML = "";
 
     if (products.length === 0) {
         table.innerHTML = `<tr><td colspan="5" style="text-align:center; color:#aaa;">Inventory is Empty! All Cloud Stock Cleared.</td></tr>`;
+        if(totalItemsEl) totalItemsEl.innerText = "0";
+        if(totalValueEl) totalValueEl.innerText = "₹0";
+        if(activeCatsEl) activeCatsEl.innerText = "0";
         return;
     }
 
+    let totalValue = 0;
+    let categoriesSet = new Set();
+
     products.forEach(p => {
+        totalValue += Number(p.price) || 0;
+        categoriesSet.add(p.category);
+
         table.innerHTML += `
             <tr>
-                <td><img src="${p.image}" width="60" style="object-fit: cover; height: 60px; border-radius: 4px;"></td>
-                <td>${p.name}</td>
-                <td>₹${p.price.toLocaleString("en-IN")}</td>
-                <td>${p.category}</td>
-                <td>
-                    <button class="gold-btn" onclick="deleteProduct('${p.dbKey}')">Delete</button>
+                <td><img src="${p.image}" width="60" style="object-fit: cover; height: 60px; border-radius: 4px; border: 1px solid rgba(212,175,55,.3);" onerror="this.src='./images/fallback-default.png'"></td>
+                <td style="font-weight:600; color:#fff;">${p.name}</td>
+                <td style="color:#d4af37;">₹${p.price.toLocaleString("en-IN")}</td>
+                <td><span style="background:#222; color:#bbb; padding:4px 10px; border-radius:12px; font-size:12px;">${p.category}</span></td>
+                <td style="text-align: right;">
+                    <button class="gold-btn" style="width:auto; padding:6px 15px; font-size:12px; border-color:#ff4444; color:#ff4444;" onclick="deleteProduct('${p.dbKey}')">Delete</button>
                 </td>
             </tr>
         `;
     });
+
+    // Update Dashboard Stats Counters
+    if(totalItemsEl) totalItemsEl.innerText = products.length;
+    if(totalValueEl) totalValueEl.innerText = "₹" + totalValue.toLocaleString("en-IN");
+    if(activeCatsEl) activeCatsEl.innerText = categoriesSet.size;
 }
 
-// ==========================================
-// DELETE SINGLE PRODUCT FROM CLOUD
-// ==========================================
-function deleteProduct(dbKey) {
-    database.ref("products/" + dbKey).remove()
-        .then(() => {
-            showToast("Item Deleted from Cloud!");
-        });
+// 4. DELETE SINGLE MASTERPIECE
+function deleteProduct(key) {
+    if(confirm("Remove this masterpiece from showcase?")) {
+        firebase.database().ref('products/' + key).remove()
+            .then(() => showToast("Product Deleted"))
+            .catch((err) => console.log(err));
+    }
 }
 
-// ==========================================
-// UTILITY: CLEAR ALL STOCK AT ONCE
-// ==========================================
+// 5. EMERGENCY WIPE ALL INVENTORY
 function clearAllStock() {
-    if (confirm("Kya aap sach me poora STOCK KHALI karna chahte hain? Isse real-time me har browser aur customer phone se items gayab ho jayenge!")) {
-        database.ref("products").remove()
+    if (confirm("🚨 DANGER: Are you absolutely sure you want to WIPE out all stock from the cloud database?")) {
+        firebase.database().ref('products').remove()
             .then(() => {
-                showToast("All Cloud Stock Cleared!");
+                showToast("Database Formatted!");
             });
     }
 }
 
-// ==========================================
-// BRAND CHANGE & TOAST
-// ==========================================
+// 6. BRAND MANAGER UTILITY
 function saveBrand() {
-    let name = document.getElementById("brandName").value;
-    localStorage.setItem("brand", name);
-    showToast("Brand Updated");
+    let name = document.getElementById("brandName").value.trim();
+    if(name) {
+        showToast("Brand Name Updated: " + name);
+    }
 }
 
-function showToast(text) {
+// TOAST TRIGGER
+function showToast(msg) {
     let t = document.getElementById("toast");
-    if (!t) return;
-    t.innerHTML = text;
-    t.style.display = "block";
-    setTimeout(() => {
-        t.style.display = "none";
-    }, 2500);
+    if(t) {
+        t.innerText = msg;
+        t.classList.add("show");
+        setTimeout(() => t.classList.remove("show"), 2500);
+    }
 }
 
-// Start Loader Animation
-window.onload = function() {
-    let loader = document.getElementById("loader");
-    if (loader) {
-        setTimeout(() => {
-            loader.style.display = "none";
-        }, 1500);
+// USER SEARCH & FILTER CONTROLS (Bypass routing)
+function searchProduct() {
+    let query = document.getElementById("search").value.toLowerCase();
+    let filtered = products.filter(p => p.name.toLowerCase().includes(query));
+    displayProducts(filtered);
+}
+
+function filterCategory() {
+    let cat = document.getElementById("category").value;
+    if(cat === "all") {
+        displayProducts(products);
+    } else {
+        let filtered = products.filter(p => p.category === cat);
+        displayProducts(filtered);
     }
 }
