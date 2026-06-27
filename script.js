@@ -1,31 +1,24 @@
-// Product Dataset Mapping (Aapki image links directly integrate kar di hain)
+// Product Dataset Mapping
 const products = [
     {
         id: 1,
         title: "Classic Golden Drop",
         price: "₹95",
-        image: "images/1.png" // Ekdum simple path
+        image: "images/1.png"
     },
     {
         id: 2,
         title: "Elegant Diamond Stud",
         price: "₹96",
-        image: "images/2.png" // Ekdum simple path
+        image: "images/2.png"
     },
     {
         id: 3,
         title: "Royal Jhumka Edition",
-        price: "₹96",
-        image: "images/3.png" // Ekdum simple path
-    },
-    {
-        id: 4,
-        title: "Stylish Edition",
-        price: "₹93",
-        image: "images/4.png" // Ekdum simple path
+        price: "₹99",
+        image: "images/3.png"
     }
 ];
-
 
 // Tracking state parameters
 let selectedProduct = "";
@@ -37,11 +30,9 @@ function loadProducts() {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
 
-    // Mapping details using sequential luxury transition effects
     grid.innerHTML = products.map((product, index) => `
         <div class="product-card" style="animation: premiumFadeIn ${0.4 + index * 0.15}s ease forwards; opacity: 0;">
             <div class="product-img-container">
-                <!-- Isme maine ek automatic backup image bitha di hai agar path galat ho toh bhi broken icon nahi dikhega -->
                 <img src="${product.image}" alt="${product.title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1617038220319-276d3c1626c9?q=80&w=500';">
             </div>
             <div class="product-info">
@@ -78,31 +69,40 @@ function closeModal() {
     document.getElementById('orderModal').style.display = "none";
     document.getElementById('userName').value = "";
     document.getElementById('userAddress').value = "";
+    document.getElementById('agreeTerms').checked = false; // Reset checkbox state
 }
 
 // WhatsApp instant billing system routing
 function sendOrder() {
     const name = document.getElementById('userName').value.trim();
     const address = document.getElementById('userAddress').value.trim();
-    const phoneNumber = "917507726901"; // Target receiver number
+    const isAgreed = document.getElementById('agreeTerms').checked; // Checkbox tracking
+    const phoneNumber = "917507726901"; 
 
-    if(name && address) {
-        // Upgrade dynamic header cart indicators
-        cartCount++;
-        const badge = document.getElementById('cart-count');
-        if(badge) badge.innerText = cartCount;
-
-        // Structured enterprise dispatch message formatting
-        const message = `✨ *NEW ORDER RECEIVED* ✨\n\n👤 *Customer Name:* ${name}\n📍 *Delivery Address:* ${address}\n\n📦 *Product Ordered:* ${selectedProduct}\n💰 *Price Total:* ${selectedPrice}\n\nPlease confirm my order order dispatch schedule! 🫂💞`;
-        
-        // Securely passing text parameters into secure API link
-        const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-        
-        window.open(whatsappUrl, '_blank');
-        closeModal();
-    } else {
+    // 1. Basic validation check
+    if(!name || !address) {
         alert("Bhai, order process karne ke liye Name aur Address fill kijiye! 😊");
+        return;
     }
+
+    // 2. Strict Terms and Conditions verification check
+    if(!isAgreed) {
+        alert("⚠️ Please agree to the terms: Payment online karna hoga aur ek baar bechne ke baad return nahi hoga!");
+        return;
+    }
+
+    // If both verified, proceed with dispatch logic
+    cartCount++;
+    const badge = document.getElementById('cart-count');
+    if(badge) badge.innerText = cartCount;
+
+    // Structured enterprise dispatch message formatting with accepted legal T&C conditions
+    const message = `✨ *NEW ORDER RECEIVED* ✨\n\n👤 *Customer Name:* ${name}\n📍 *Delivery Address:* ${address}\n\n📦 *Product Ordered:* ${selectedProduct}\n💰 *Price Total:* ${selectedPrice}\n\n✅ *Customer Agreement:* I agree that payment will be online & No returns after sale.`;
+    
+    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
+    
+    window.open(whatsappUrl, '_blank');
+    closeModal();
 }
 
 // Initializing execution loop upon loading DOM architecture
