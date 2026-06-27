@@ -17,7 +17,13 @@ const products = [
         title: "Royal Jhumka Edition",
         price: "₹99",
         image: "images/3.png"
-    }
+    },
+    {
+        id: 4,
+        title: "Stylish Earing",
+        price: "86",
+        image: "images/4.png
+    }      
 ];
 
 // Tracking state parameters
