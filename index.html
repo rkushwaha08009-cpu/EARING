@@ -5,12 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>EARING | Luxury Collection</title>
     <link rel="stylesheet" href="style.css">
-    <!-- FontAwesome Icons for modern UX -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <!-- Premium Glass Navbar -->
+    <div class="announcement-bar">
+        <p>✨ LIMITED OFFER: GET 10% OFF ON YOUR FIRST ORDER + FREE SHIPPING IN LONI ✨</p>
+    </div>
+
     <nav class="navbar">
         <div class="logo">EARING</div>
         <div class="nav-icons">
@@ -21,43 +23,77 @@
         </div>
     </nav>
 
-    <!-- Luxury Interactive Hero Banner -->
     <header class="hero-section">
         <div class="hero-content">
+            <span class="hero-subtitle">Handcrafted Elegance</span>
             <h1>Premium Earring</h1>
-            <p>Luxury at your fingertips. Discover the art of elegance at lower prices.</p>
-            <a href="#product-grid" class="shop-now-btn">Explore Shop <i class="fas fa-arrow-down"></i></a>
+            <p>Luxury at your fingertips. Discover the art of premium earrings at lower prices.</p>
+            <a href="#product-grid" class="shop-now-btn">Explore Collection <i class="fas fa-chevron-down"></i></a>
         </div>
     </header>
 
-    <!-- Main Content (Product Grid Section) -->
     <main class="container">
         <h2 class="section-title">Our Exclusive Pieces</h2>
         <div id="product-grid" class="product-grid">
-            <!-- Dynamic interactive cards will be injected here by script.js -->
-        </div>
+            </div>
     </main>
 
-    <!-- Connect & Social Contacts Section -->
+    <section class="trust-section">
+        <div class="container trust-grid">
+            <div class="trust-card">
+                <i class="fas fa-truck-fast"></i>
+                <h4>Fast Delivery</h4>
+                <p>Dispatched within 24 hours</p>
+            </div>
+            <div class="trust-card">
+                <i class="fas fa-shield-halved"></i>
+                <h4>Secure Checkout</h4>
+                <p>100% Verified WhatsApp Orders</p>
+            </div>
+            <div class="trust-card">
+                <i class="fas fa-gem"></i>
+                <h4>Premium Quality</h4>
+                <p>Handpicked & curated designs</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="faq-section">
+        <div class="container">
+            <h2 class="section-title">Frequently Asked Questions</h2>
+            <div class="faq-accordion">
+                <details>
+                    <summary>How do I place an order? <i class="fas fa-plus"></i></summary>
+                    <p>It's very simple! Just click on the "Buy Now" button of your favorite earring, enter your name and address, and click "Confirm". It will directly take you to our official WhatsApp where we will finalize your order details.</p>
+                </details>
+                <details>
+                    <summary>How long will delivery take? <i class="fas fa-plus"></i></summary>
+                    <p>Usually, it takes 1 to 2 business days depending upon your delivery location in LONI. You will receive a tracking link on your WhatsApp.</p>
+                </details>
+                <details>
+                    <summary>Are these lightweight and safe for daily wear? <i class="fas fa-plus"></i></summary>
+                    <p>Yes, absolutely! All our earrings are crafted using premium skin-friendly alloys and designed to be extremely lightweight for maximum comfort.</p>
+                </details>
+            </div>
+        </div>
+    </section>
+
     <section class="contact-section">
         <div class="container">
             <h2 class="section-title">Connect With Us</h2>
             <div class="contact-grid">
-                <!-- WhatsApp -->
                 <a href="https://wa.me/917507726901?text=Hi%20Raj,%20I%20am%20interested%20in%20your%20earring%20collection!" target="_blank" class="contact-card whatsapp">
                     <i class="fab fa-whatsapp"></i>
                     <h3>WhatsApp</h3>
                     <p>+91 7507726901</p>
                 </a>
                 
-                <!-- Instagram -->
                 <a href="https://www.instagram.com/raj__0.5k_?igsh=cjlkcjJybXJlaGJ6" target="_blank" class="contact-card instagram">
                     <i class="fab fa-instagram"></i>
                     <h3>Instagram</h3>
                     <p>@raj__0.5k_</p>
                 </a>
 
-                <!-- Call Support -->
                 <a href="tel:+919657869021" class="contact-card call">
                     <i class="fas fa-phone-alt"></i>
                     <h3>Call Us</h3>
@@ -67,7 +103,6 @@
         </div>
     </section>
 
-    <!-- Premium Blurred Order Modal Form -->
     <div id="orderModal" class="modal">
         <div class="modal-content">
             <span class="close-btn" onclick="closeModal()">&times;</span>
@@ -81,13 +116,20 @@
             <div class="input-group">
                 <input type="text" id="userAddress" placeholder="Your Full Delivery Address" required>
             </div>
+
+            <div class="terms-container">
+                <input type="checkbox" id="agreeTerms">
+                <label for="agreeTerms">
+                    Main sehmat hu ki payment online hoga aur ek baar bechne ke baad return nahi hoga. ⚠️
+                </label>
+            </div>
+
             <button class="modal-buy-btn" onclick="sendOrder()">
                 Confirm & Order via WhatsApp
             </button>
         </div>
     </div>
 
-    <!-- Luxury Footer -->
     <footer>
         <p>&copy; 2026 EARING. Powered by Raj. All Rights Reserved.</p>
     </footer>
