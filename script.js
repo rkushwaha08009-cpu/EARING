@@ -2,13 +2,13 @@
 // 1. FIREBASE CONFIGURATION (Yahan apni details daalein)
 // ==========================================
 const firebaseConfig = {
-    apiKey: "YOUR_API_KEY",
-    authDomain: "YOUR_AUTH_DOMAIN",
-    databaseURL: "YOUR_DATABASE_URL", // Yeh zaroori hai Realtime DB ke liye
-    projectId: "YOUR_PROJECT_ID",
-    storageBucket: "YOUR_STORAGE_BUCKET",
-    messagingSenderId: "YOUR_MESSAGING_SENDER_ID",
-    appId: "YOUR_APP_ID"
+    apiKey: "AIzaSyB9SeoDcKu1_WhaFIEYXI4IrcMM0mOQiOY",
+    authDomain: "earing-bfc75.firebaseapp.com",
+    databaseURL: "https://earing-bfc75-default-rtdb.firebaseio.com/", // Yeh zaroori hai Realtime DB ke liye
+    projectId: "earing-bfc75",
+    storageBucket: "earing-bfc75.firebasestorage.app",
+    messagingSenderId: "425149311395",
+    appId: "1:425149311395:web:c1df82b87dd66d4cf79216"
 };
 
 // Initialize Firebase safely
