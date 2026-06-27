@@ -22,20 +22,20 @@ firebase.database().ref('products').on('value', (snapshot) => {
     }
 });
 
-// 1. ADD PRODUCT WITH AUTOMATIC LOCAL FOLDER ROUTING
 function addProduct() {
     let name = document.getElementById("pname").value.trim();
     let price = document.getElementById("price").value.trim();
     let category = document.getElementById("ptype").value;
     let filename = document.getElementById("imageFilename").value.trim();
 
+    // Basic Validation
     if (!name || !price || !filename) {
-        showToast("Please fill all fields!");
+        showToast("Please fill all fields! ❌");
+        alert("Saare boxes bharna zaroori hai!");
         return;
     }
 
-    // STYLING DIRECTORY RESOLVER
-    // Agar aapne "love.png" daala, toh ye automatic use "./images/love.png" bana dega
+    // Dynamic Directory Routing
     let finalImagePath = "./images/" + filename;
 
     let newProduct = {
@@ -45,17 +45,25 @@ function addProduct() {
         image: finalImagePath
     };
 
-    // Firebase database push setup
+    console.log("Pushing data to Firebase:", newProduct);
+
+    // DIRECT CLOUD PUSH (Bypassing faulty browser-side validation loops)
     firebase.database().ref('products').push(newProduct)
         .then(() => {
-            showToast("Product Linked Successfully! ✅");
-            // Clear inputs
+            alert("Product Linked Successfully! ✅ Data sent to Firebase.");
+            if(typeof showToast === "function") showToast("Product Linked Successfully! ✅");
+            
+            // Clear inputs automatically after success
             document.getElementById("pname").value = "";
             document.getElementById("price").value = "";
             document.getElementById("imageFilename").value = "";
         })
-        .catch((error) => console.error("Database Error:", error));
+        .catch((error) => {
+            console.error("Firebase Storage Error:", error);
+            alert("Firebase Error: " + error.message);
+        });
 }
+
 
 // 2. DISPLAY PRODUCTS IN USER PLATFORM (index.html)
 function displayProducts(productsList) {
