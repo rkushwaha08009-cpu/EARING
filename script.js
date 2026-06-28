@@ -1,101 +1,21 @@
 // Product Dataset Mapping
 const products = [
-    {
-        id: 1,
-        title: "Classic Golden Drop",
-        price: "₹86",
-        image: "images/1.png"
-    },
-    {
-        id: 2,
-        title: "Elegant Diamond Stud",
-        price: "₹83",
-        image: "images/2.png"
-    },
-    {
-        id: 3,
-        title: "Royal Jhumka Edition",
-        price: "₹88",
-        image: "images/3.png"
-    },
-    {
-        id: 4,
-        title: "Stylish Earing",
-        price: "₹84",
-        image: "images/4.png"
-    },
-    {
-        id: 5,
-        title: "xyz",
-        price: "87",
-        image: "images/5.png"
-    },
-    {
-        id: 6,
-        title: "xyz",
-        price: "87",
-        image: "images/6.png"
-    },
-    {
-        id: 7,
-        title: "xyz",
-        price: "87",
-        image: "images/7.png"
-    },
-    {
-        id: 8,
-        title: "xyz",
-        price: "87",
-        image: "images/8.png"
-    },
-    {
-        id: 9,
-        title: "xyz",
-        price: "87",
-        image: "images/9.png"
-    },
-    {
-        id: 10,
-        title: "xyz",
-        price: "87",
-        image: "images/10.png"
-    },
-    {
-        id: 11,
-        title: "xyz",
-        price: "87",
-        image: "images/11.png"
-    },
-    {
-        id: 12,
-        title: "xyz",
-        price: "87",
-        image: "images/12.png"
-    },
-    {
-        id: 13,
-        title: "xyz",
-        price: "87",
-        image: "images/13.png"
-    },
-    {
-        id: 14,
-        title: "xyz",
-        price: "87",
-        image: "images/14.png"
-    },
-    {
-        id: 15,
-        title: "xyz",
-        price: "87",
-        image: "images/15.png"
-    },
-    {
-        id: 16,
-        title: "xyz",
-        price: "87",
-        image: "images/16.png"
-    },
+    { id: 1, title: "Classic Golden Drop", price: "₹86", image: "images/1.png" },
+    { id: 2, title: "Elegant Diamond Stud", price: "₹83", image: "images/2.png" },
+    { id: 3, title: "Royal Jhumka Edition", price: "₹88", image: "images/3.png" },
+    { id: 4, title: "Stylish Earing", price: "₹84", image: "images/4.png" },
+    { id: 5, title: "xyz", price: "87", image: "images/5.png" },
+    { id: 6, title: "xyz", price: "87", image: "images/6.png" },
+    { id: 7, title: "xyz", price: "87", image: "images/7.png" },
+    { id: 8, title: "xyz", price: "87", image: "images/8.png" },
+    { id: 9, title: "xyz", price: "87", image: "images/9.png" },
+    { id: 10, title: "xyz", price: "87", image: "images/10.png" },
+    { id: 11, title: "xyz", price: "87", image: "images/11.png" },
+    { id: 12, title: "xyz", price: "87", image: "images/12.png" },
+    { id: 13, title: "xyz", price: "87", image: "images/13.png" },
+    { id: 14, title: "xyz", price: "87", image: "images/14.png" },
+    { id: 15, title: "xyz", price: "87", image: "images/15.png" },
+    { id: 16, title: "xyz", price: "87", image: "images/16.png" },
 ];
 
 // Tracking state parameters
@@ -111,7 +31,7 @@ function loadProducts() {
     if (!grid) return;
 
     grid.innerHTML = products.map((product, index) => {
-        const baseNum = parseInt(product.price.replace(/[^0-9]/g, ''));
+        const baseNum = parseInt(product.price.toString().replace(/[^0-9]/g, ''));
         const displayPrice = baseNum + 25;
 
         return `
@@ -232,7 +152,6 @@ function openModal(name, updatedPrice) {
         `;
         userNameField.parentNode.insertBefore(extraFields, userNameField.nextSibling);
 
-        // Updated text alert to inform about next-order premium card too!
         let couponWrapper = document.createElement('div');
         couponWrapper.id = 'coupon-box-wrapper';
         couponWrapper.className = 'coupon-section';
@@ -268,7 +187,6 @@ function applyCoupon() {
     let priceTag = document.getElementById('modal-price-tag');
 
     if (code === "RK KUMAR") {
-        // Code 1: Standard ₹20 off
         finalCalculatedPrice = originalBasePrice - 20;
         priceTag.innerText = `₹${finalCalculatedPrice}`;
         activeCouponApplied = "RK KUMAR (₹20 Off)";
@@ -279,14 +197,13 @@ function applyCoupon() {
         document.getElementById('couponInput').disabled = true;
     } 
     else if (code === "RK_PREMIUM") {
-        // Code 2: Premium Box Card Coupon ₹25 off
         finalCalculatedPrice = originalBasePrice - 25;
         priceTag.innerText = `₹${finalCalculatedPrice}`;
         activeCouponApplied = "RK_PREMIUM (₹25 Next-Order Special)";
         
         msg.innerText = `🔥 Next-Order Card "RK_PREMIUM" Applied! ₹25 saved!`;
         msg.style.display = "block";
-        msg.style.color = "#d4af37"; // Golden touch for premium card
+        msg.style.color = "#d4af37"; 
         document.getElementById('couponInput').disabled = true;
     } 
     else {
@@ -332,13 +249,29 @@ function sendOrder() {
     const badge = document.getElementById('cart-count');
     if(badge) badge.innerText = cartCount;
 
-    // Structured Message with the active coupon log
     const message = `✨ *NEW ORDER CONFIRMED* ✨\n\n👤 *Customer Name:* ${name}\n📱 *Contact Number:* ${phone}\n📸 *Verification Info:* ${social}\n📍 *Delivery Address:* ${address}\n\n📦 *Product Ordered:* ${selectedProduct}\n🎫 *Coupon Used:* ${activeCouponApplied}\n💰 *Price Total:* ₹${finalCalculatedPrice}\n\n✅ *Customer Agreement:* I agree that payment will be online & No returns after sale.`;
     
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     
     window.open(whatsappUrl, '_blank');
     closeModal();
+}
+
+// One-Tap Coupon Copy System
+function copyCoupon() {
+    const couponText = document.getElementById('couponCode').innerText;
+    const btnText = document.getElementById('copyBtnText');
+    
+    navigator.clipboard.writeText(couponText).then(() => {
+        if(btnText) btnText.innerText = "Copied! 🎉";
+        alert("🎉 Code 'RK KUMAR' successfully copied! Ab order karte waqt paste kar dena. 😊");
+        
+        setTimeout(() => {
+            if(btnText) btnText.innerText = "Copy Code";
+        }, 3000);
+    }).catch(err => {
+        console.error('Error in copying: ', err);
+    });
 }
 
 document.addEventListener('DOMContentLoaded', loadProducts);
