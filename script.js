@@ -1,27 +1,27 @@
-// Product Dataset Mapping (Yahan price aapki base price hi rahegi, logic automatically update karega)
+// Product Dataset Mapping
 const products = [
     {
         id: 1,
         title: "Classic Golden Drop",
-        price: "₹90",
+        price: "₹95",
         image: "images/1.png"
     },
     {
         id: 2,
         title: "Elegant Diamond Stud",
-        price: "₹93",
+        price: "₹96",
         image: "images/2.png"
     },
     {
         id: 3,
         title: "Royal Jhumka Edition",
-        price: "₹91",
+        price: "₹99",
         image: "images/3.png"
     },
     {
         id: 4,
         title: "Stylish Earing",
-        price: "₹89",
+        price: "₹86",
         image: "images/4.png"
     }      
 ];
@@ -31,6 +31,7 @@ let selectedProduct = "";
 let originalBasePrice = 0; 
 let finalCalculatedPrice = 0; 
 let cartCount = 0;
+let activeCouponApplied = "None"; // Konsa coupon laga track karne ke liye
 
 // Injection and premium initialization function
 function loadProducts() {
@@ -38,7 +39,6 @@ function loadProducts() {
     if (!grid) return;
 
     grid.innerHTML = products.map((product, index) => {
-        // String price se number nikal kar automatic ₹25 upfront add kar rahe hain taaki main page par hi badhi hui price dikhe
         const baseNum = parseInt(product.price.replace(/[^0-9]/g, ''));
         const displayPrice = baseNum + 25;
 
@@ -59,7 +59,7 @@ function loadProducts() {
     }).join('');
 }
 
-// Inline luxury dynamic animation parser
+// Inline luxury dynamic animation and form styling parser
 const dynamicStyles = document.createElement('style');
 dynamicStyles.innerHTML = `
     @keyframes premiumFadeIn {
@@ -75,10 +75,11 @@ dynamicStyles.innerHTML = `
         text-align: left;
     }
     .coupon-header {
-        font-size: 12px;
+        font-size: 11px;
         color: #d4af37;
         font-weight: 600;
         margin-bottom: 8px;
+        line-height: 1.4;
     }
     .coupon-row {
         display: flex;
@@ -107,65 +108,116 @@ dynamicStyles.innerHTML = `
         font-weight: 500;
         display: none;
     }
+    .verification-group {
+        margin: 10px 0;
+        text-align: left;
+    }
+    .verification-group label {
+        display: block;
+        font-size: 12px;
+        color: #aaa;
+        margin-bottom: 5px;
+        font-weight: 500;
+    }
+    .verification-group input {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #333;
+        background: #111;
+        color: #fff;
+        border-radius: 8px;
+        box-sizing: border-box;
+    }
 `;
 document.head.appendChild(dynamicStyles);
 
 // Seamless checkout Modal controls
 function openModal(name, updatedPrice) {
     selectedProduct = name;
-    
-    // Yahan original base price store ho rahi hai backup calculation ke liye
     originalBasePrice = updatedPrice;
     finalCalculatedPrice = updatedPrice;
+    activeCouponApplied = "None"; // Reset state
     
-    // Modal UI Update - Price ekdum match karegi card se
     document.getElementById('modal-product-display').innerHTML = `
         ${name} — <span id="modal-price-tag">₹${finalCalculatedPrice}</span>
     `;
 
-    // Dynamic Coupon Box Injector
-    let modalContent = document.querySelector('.modal-content');
     let existingCoupon = document.getElementById('coupon-box-wrapper');
+    let userNameField = document.getElementById('userName');
     
-    if (!existingCoupon) {
+    if (!existingCoupon && userNameField) {
+        let extraFields = document.createElement('div');
+        extraFields.id = 'extra-verification-fields';
+        extraFields.innerHTML = `
+            <div class="verification-group">
+                <label>📱 Contact Mobile Number (WhatsApp/Call)</label>
+                <input type="tel" id="userPhone" placeholder="Enter 10-digit mobile number" maxlength="10">
+            </div>
+            <div class="verification-group">
+                <label>📸 Instagram Username / Email (For Verification)</label>
+                <input type="text" id="userSocial" placeholder="@username or email address">
+            </div>
+        `;
+        userNameField.parentNode.insertBefore(extraFields, userNameField.nextSibling);
+
+        // Updated text alert to inform about next-order premium card too!
         let couponWrapper = document.createElement('div');
         couponWrapper.id = 'coupon-box-wrapper';
         couponWrapper.className = 'coupon-section';
         couponWrapper.innerHTML = `
-            <div class="coupon-header">🎁 Use code "RK KUMAR" to get ₹20 OFF!</div>
+            <div class="coupon-header">🎁 Use code "RK KUMAR" for ₹20 OFF! <br>🌟 Got a Next-Order Card? Enter that code here for a bigger discount!</div>
             <div class="coupon-row">
                 <input type="text" id="couponInput" placeholder="Enter Coupon Code">
                 <button type="button" class="apply-btn" onclick="applyCoupon()">Apply</button>
             </div>
-            <div id="couponMsg" class="coupon-success">🎉 Code Applied! ₹20 Discounted!</div>
+            <div id="couponMsg" class="coupon-success">🎉 Code Applied! Discount Added!</div>
         `;
-        let addressGroup = document.querySelectorAll('.input-group')[1];
-        addressGroup.parentNode.insertBefore(couponWrapper, addressGroup.nextSibling);
+        let addressField = document.getElementById('userAddress');
+        if(addressField) {
+            addressField.parentNode.insertBefore(couponWrapper, addressField.nextSibling);
+        }
     } else {
-        document.getElementById('couponInput').value = "";
-        document.getElementById('couponInput').disabled = false;
-        document.getElementById('couponMsg').style.display = "none";
+        if(document.getElementById('userPhone')) document.getElementById('userPhone').value = "";
+        if(document.getElementById('userSocial')) document.getElementById('userSocial').value = "";
+        if(document.getElementById('couponInput')) {
+            document.getElementById('couponInput').value = "";
+            document.getElementById('couponInput').disabled = false;
+        }
+        if(document.getElementById('couponMsg')) document.getElementById('couponMsg').style.display = "none";
     }
 
     document.getElementById('orderModal').style.display = "block";
 }
 
-// Coupon Evaluation Trigger
+// Dual Coupon Evaluation Trigger
 function applyCoupon() {
     let code = document.getElementById('couponInput').value.trim();
     let msg = document.getElementById('couponMsg');
     let priceTag = document.getElementById('modal-price-tag');
 
     if (code === "RK KUMAR") {
-        // Updated price se ₹20 sidha kam
+        // Code 1: Standard ₹20 off
         finalCalculatedPrice = originalBasePrice - 20;
         priceTag.innerText = `₹${finalCalculatedPrice}`;
+        activeCouponApplied = "RK KUMAR (₹20 Off)";
         
         msg.innerText = `🎉 Code "RK KUMAR" Applied! ₹20 saved.`;
         msg.style.display = "block";
         msg.style.color = "#25D366";
         document.getElementById('couponInput').disabled = true;
-    } else {
+    } 
+    else if (code === "RK_PREMIUM") {
+        // Code 2: Premium Box Card Coupon ₹25 off
+        finalCalculatedPrice = originalBasePrice - 25;
+        priceTag.innerText = `₹${finalCalculatedPrice}`;
+        activeCouponApplied = "RK_PREMIUM (₹25 Next-Order Special)";
+        
+        msg.innerText = `🔥 Next-Order Card "RK_PREMIUM" Applied! ₹25 saved!`;
+        msg.style.display = "block";
+        msg.style.color = "#d4af37"; // Golden touch for premium card
+        document.getElementById('couponInput').disabled = true;
+    } 
+    else {
         msg.innerText = `❌ Invalid Coupon Code!`;
         msg.style.display = "block";
         msg.style.color = "#ff3333";
@@ -176,19 +228,26 @@ function closeModal() {
     document.getElementById('orderModal').style.display = "none";
     document.getElementById('userName').value = "";
     document.getElementById('userAddress').value = "";
+    if(document.getElementById('userPhone')) document.getElementById('userPhone').value = "";
+    if(document.getElementById('userSocial')) document.getElementById('userSocial').value = "";
     document.getElementById('agreeTerms').checked = false; 
 }
 
-// WhatsApp instant billing system routing
 function sendOrder() {
     const name = document.getElementById('userName').value.trim();
     const address = document.getElementById('userAddress').value.trim();
+    const phone = document.getElementById('userPhone') ? document.getElementById('userPhone').value.trim() : "";
+    const social = document.getElementById('userSocial') ? document.getElementById('userSocial').value.trim() : "";
     const isAgreed = document.getElementById('agreeTerms').checked; 
-    const couponApplied = document.getElementById('couponInput') ? document.getElementById('couponInput').disabled : false;
     const phoneNumber = "917507726901"; 
 
-    if(!name || !address) {
-        alert("Bhai, order process karne ke liye Name aur Address fill kijiye! 😊");
+    if(!name || !address || !phone || !social) {
+        alert("Bhai, order confirm karne ke liye Name, Phone, Address aur Insta/Email saari details bharna zaroori hai! 😊");
+        return;
+    }
+
+    if(phone.length < 10) {
+        alert("⚠️ Please enter a valid 10-digit mobile number!");
         return;
     }
 
@@ -201,9 +260,8 @@ function sendOrder() {
     const badge = document.getElementById('cart-count');
     if(badge) badge.innerText = cartCount;
 
-    const couponStatus = couponApplied ? "RK KUMAR (₹20 Applied)" : "None";
-
-    const message = `✨ *NEW ORDER RECEIVED* ✨\n\n👤 *Customer Name:* ${name}\n📍 *Delivery Address:* ${address}\n\n📦 *Product Ordered:* ${selectedProduct}\n🎫 *Coupon Used:* ${couponStatus}\n💰 *Price Total:* ₹${finalCalculatedPrice}\n\n✅ *Customer Agreement:* I agree that payment will be online & No returns after sale.`;
+    // Structured Message with the active coupon log
+    const message = `✨ *NEW ORDER CONFIRMED* ✨\n\n👤 *Customer Name:* ${name}\n📱 *Contact Number:* ${phone}\n📸 *Verification Info:* ${social}\n📍 *Delivery Address:* ${address}\n\n📦 *Product Ordered:* ${selectedProduct}\n🎫 *Coupon Used:* ${activeCouponApplied}\n💰 *Price Total:* ₹${finalCalculatedPrice}\n\n✅ *Customer Agreement:* I agree that payment will be online & No returns after sale.`;
     
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     
