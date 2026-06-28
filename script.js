@@ -9,7 +9,7 @@ const products = [
     { id: 7, title: "xyz", price: "87", image: "images/7.png" },
     { id: 8, title: "xyz", price: "87", image: "images/8.png" },
     { id: 9, title: "xyz", price: "87", image: "images/9.png" },
-    { id: 10, title: "xyz", price: "87", image: "images/10.png" },
+    { id: 10, title: "Luxury Blue Tassel", price: "99", image: "images/10.png" },
     { id: 11, title: "xyz", price: "87", image: "images/11.png" },
     { id: 12, title: "xyz", price: "87", image: "images/12.png" },
     { id: 13, title: "xyz", price: "87", image: "images/13.png" },
