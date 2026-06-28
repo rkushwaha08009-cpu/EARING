@@ -1,35 +1,35 @@
-// Product Dataset Mapping
+// Product Dataset Mapping (Yahan price aapki base price hi rahegi, logic automatically update karega)
 const products = [
     {
         id: 1,
         title: "Classic Golden Drop",
-        price: "₹95",
+        price: "₹90",
         image: "images/1.png"
     },
     {
         id: 2,
         title: "Elegant Diamond Stud",
-        price: "₹96",
+        price: "₹93",
         image: "images/2.png"
     },
     {
         id: 3,
         title: "Royal Jhumka Edition",
-        price: "₹99",
+        price: "₹91",
         image: "images/3.png"
     },
     {
         id: 4,
         title: "Stylish Earing",
-        price: "₹86",
+        price: "₹89",
         image: "images/4.png"
     }      
 ];
 
 // Tracking state parameters
 let selectedProduct = "";
-let originalBasePrice = 0; // Numeric value track karne ke liye
-let finalCalculatedPrice = 0; // Final amount aur WhatsApp ke liye
+let originalBasePrice = 0; 
+let finalCalculatedPrice = 0; 
 let cartCount = 0;
 
 // Injection and premium initialization function
@@ -37,20 +37,26 @@ function loadProducts() {
     const grid = document.getElementById('product-grid');
     if (!grid) return;
 
-    grid.innerHTML = products.map((product, index) => `
-        <div class="product-card" style="animation: premiumFadeIn ${0.4 + index * 0.15}s ease forwards; opacity: 0;">
-            <div class="product-img-container">
-                <img src="${product.image}" alt="${product.title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1617038220319-276d3c1626c9?q=80&w=500';">
+    grid.innerHTML = products.map((product, index) => {
+        // String price se number nikal kar automatic ₹25 upfront add kar rahe hain taaki main page par hi badhi hui price dikhe
+        const baseNum = parseInt(product.price.replace(/[^0-9]/g, ''));
+        const displayPrice = baseNum + 25;
+
+        return `
+            <div class="product-card" style="animation: premiumFadeIn ${0.4 + index * 0.15}s ease forwards; opacity: 0;">
+                <div class="product-img-container">
+                    <img src="${product.image}" alt="${product.title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1617038220319-276d3c1626c9?q=80&w=500';">
+                </div>
+                <div class="product-info">
+                    <h3 class="product-title">${product.title}</h3>
+                    <p class="product-price">₹${displayPrice}</p>
+                    <button class="buy-btn" onclick="openModal('${product.title}', ${displayPrice})">
+                         Buy Now
+                    </button>
+                </div>
             </div>
-            <div class="product-info">
-                <h3 class="product-title">${product.title}</h3>
-                <p class="product-price">${product.price}</p>
-                <button class="buy-btn" onclick="openModal('${product.title}', '${product.price}')">
-                     Buy Now
-                </button>
-            </div>
-        </div>
-    `).join('');
+        `;
+    }).join('');
 }
 
 // Inline luxury dynamic animation parser
@@ -105,21 +111,19 @@ dynamicStyles.innerHTML = `
 document.head.appendChild(dynamicStyles);
 
 // Seamless checkout Modal controls
-function openModal(name, priceStr) {
+function openModal(name, updatedPrice) {
     selectedProduct = name;
     
-    // String price se sirf number nikalna (e.g., "₹86" -> 86)
-    originalBasePrice = parseInt(priceStr.replace(/[^0-9]/g, ''));
+    // Yahan original base price store ho rahi hai backup calculation ke liye
+    originalBasePrice = updatedPrice;
+    finalCalculatedPrice = updatedPrice;
     
-    // Rule 1: Automatic ₹25 add karna base price me
-    finalCalculatedPrice = originalBasePrice + 25;
-    
-    // Modal UI Update with increased price
+    // Modal UI Update - Price ekdum match karegi card se
     document.getElementById('modal-product-display').innerHTML = `
         ${name} — <span id="modal-price-tag">₹${finalCalculatedPrice}</span>
     `;
 
-    // Dynamic Coupon Box Injector (agar pehle se nahi hai)
+    // Dynamic Coupon Box Injector
     let modalContent = document.querySelector('.modal-content');
     let existingCoupon = document.getElementById('coupon-box-wrapper');
     
@@ -135,11 +139,9 @@ function openModal(name, priceStr) {
             </div>
             <div id="couponMsg" class="coupon-success">🎉 Code Applied! ₹20 Discounted!</div>
         `;
-        // Address input ke theek pehle append karna
         let addressGroup = document.querySelectorAll('.input-group')[1];
         addressGroup.parentNode.insertBefore(couponWrapper, addressGroup.nextSibling);
     } else {
-        // Reset coupon state if modal re-opened
         document.getElementById('couponInput').value = "";
         document.getElementById('couponInput').disabled = false;
         document.getElementById('couponMsg').style.display = "none";
@@ -155,8 +157,8 @@ function applyCoupon() {
     let priceTag = document.getElementById('modal-price-tag');
 
     if (code === "RK KUMAR") {
-        // Rule 2: Coupon match hone par ₹20 kam karna
-        finalCalculatedPrice = (originalBasePrice + 25) - 20;
+        // Updated price se ₹20 sidha kam
+        finalCalculatedPrice = originalBasePrice - 20;
         priceTag.innerText = `₹${finalCalculatedPrice}`;
         
         msg.innerText = `🎉 Code "RK KUMAR" Applied! ₹20 saved.`;
@@ -174,38 +176,33 @@ function closeModal() {
     document.getElementById('orderModal').style.display = "none";
     document.getElementById('userName').value = "";
     document.getElementById('userAddress').value = "";
-    document.getElementById('agreeTerms').checked = false; // Reset checkbox state
+    document.getElementById('agreeTerms').checked = false; 
 }
 
 // WhatsApp instant billing system routing
 function sendOrder() {
     const name = document.getElementById('userName').value.trim();
     const address = document.getElementById('userAddress').value.trim();
-    const isAgreed = document.getElementById('agreeTerms').checked; // Checkbox tracking
+    const isAgreed = document.getElementById('agreeTerms').checked; 
     const couponApplied = document.getElementById('couponInput') ? document.getElementById('couponInput').disabled : false;
     const phoneNumber = "917507726901"; 
 
-    // 1. Basic validation check
     if(!name || !address) {
         alert("Bhai, order process karne ke liye Name aur Address fill kijiye! 😊");
         return;
     }
 
-    // 2. Strict Terms and Conditions verification check
     if(!isAgreed) {
         alert("⚠️ Please agree to the terms: Payment online karna hoga aur ek baar bechne ke baad return nahi hoga!");
         return;
     }
 
-    // If both verified, proceed with dispatch logic
     cartCount++;
     const badge = document.getElementById('cart-count');
     if(badge) badge.innerText = cartCount;
 
-    // Coupon tracking string for WhatsApp billing record
     const couponStatus = couponApplied ? "RK KUMAR (₹20 Applied)" : "None";
 
-    // Structured enterprise dispatch message formatting
     const message = `✨ *NEW ORDER RECEIVED* ✨\n\n👤 *Customer Name:* ${name}\n📍 *Delivery Address:* ${address}\n\n📦 *Product Ordered:* ${selectedProduct}\n🎫 *Coupon Used:* ${couponStatus}\n💰 *Price Total:* ₹${finalCalculatedPrice}\n\n✅ *Customer Agreement:* I agree that payment will be online & No returns after sale.`;
     
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
@@ -214,5 +211,4 @@ function sendOrder() {
     closeModal();
 }
 
-// Initializing execution loop upon loading DOM architecture
 document.addEventListener('DOMContentLoaded', loadProducts);
