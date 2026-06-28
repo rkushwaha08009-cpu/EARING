@@ -28,7 +28,8 @@ const products = [
 
 // Tracking state parameters
 let selectedProduct = "";
-let selectedPrice = "";
+let originalBasePrice = 0; // Numeric value track karne ke liye
+let finalCalculatedPrice = 0; // Final amount aur WhatsApp ke liye
 let cartCount = 0;
 
 // Injection and premium initialization function
@@ -59,16 +60,114 @@ dynamicStyles.innerHTML = `
         from { opacity: 0; transform: translateY(40px); }
         to { opacity: 1; transform: translateY(0); }
     }
+    .coupon-section {
+        background: rgba(212, 175, 55, 0.05);
+        border: 1px dashed #d4af37;
+        padding: 12px;
+        border-radius: 12px;
+        margin: 15px 0;
+        text-align: left;
+    }
+    .coupon-header {
+        font-size: 12px;
+        color: #d4af37;
+        font-weight: 600;
+        margin-bottom: 8px;
+    }
+    .coupon-row {
+        display: flex;
+        gap: 8px;
+    }
+    .coupon-row input {
+        margin-bottom: 0 !important;
+        padding: 10px !important;
+    }
+    .apply-btn {
+        background: #d4af37;
+        color: black;
+        border: none;
+        padding: 0 15px;
+        border-radius: 10px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        transition: 0.2s;
+    }
+    .apply-btn:hover { background: #fff; }
+    .coupon-success {
+        color: #25D366;
+        font-size: 12px;
+        margin-top: 5px;
+        font-weight: 500;
+        display: none;
+    }
 `;
 document.head.appendChild(dynamicStyles);
 
 // Seamless checkout Modal controls
-function openModal(name, price) {
+function openModal(name, priceStr) {
     selectedProduct = name;
-    selectedPrice = price;
     
-    document.getElementById('modal-product-display').innerText = `${name} — ${price}`;
+    // String price se sirf number nikalna (e.g., "₹86" -> 86)
+    originalBasePrice = parseInt(priceStr.replace(/[^0-9]/g, ''));
+    
+    // Rule 1: Automatic ₹25 add karna base price me
+    finalCalculatedPrice = originalBasePrice + 25;
+    
+    // Modal UI Update with increased price
+    document.getElementById('modal-product-display').innerHTML = `
+        ${name} — <span id="modal-price-tag">₹${finalCalculatedPrice}</span>
+    `;
+
+    // Dynamic Coupon Box Injector (agar pehle se nahi hai)
+    let modalContent = document.querySelector('.modal-content');
+    let existingCoupon = document.getElementById('coupon-box-wrapper');
+    
+    if (!existingCoupon) {
+        let couponWrapper = document.createElement('div');
+        couponWrapper.id = 'coupon-box-wrapper';
+        couponWrapper.className = 'coupon-section';
+        couponWrapper.innerHTML = `
+            <div class="coupon-header">🎁 Use code "RK KUMAR" to get ₹20 OFF!</div>
+            <div class="coupon-row">
+                <input type="text" id="couponInput" placeholder="Enter Coupon Code">
+                <button type="button" class="apply-btn" onclick="applyCoupon()">Apply</button>
+            </div>
+            <div id="couponMsg" class="coupon-success">🎉 Code Applied! ₹20 Discounted!</div>
+        `;
+        // Address input ke theek pehle append karna
+        let addressGroup = document.querySelectorAll('.input-group')[1];
+        addressGroup.parentNode.insertBefore(couponWrapper, addressGroup.nextSibling);
+    } else {
+        // Reset coupon state if modal re-opened
+        document.getElementById('couponInput').value = "";
+        document.getElementById('couponInput').disabled = false;
+        document.getElementById('couponMsg').style.display = "none";
+    }
+
     document.getElementById('orderModal').style.display = "block";
+}
+
+// Coupon Evaluation Trigger
+function applyCoupon() {
+    let code = document.getElementById('couponInput').value.trim();
+    let msg = document.getElementById('couponMsg');
+    let priceTag = document.getElementById('modal-price-tag');
+
+    if (code === "RK KUMAR") {
+        // Rule 2: Coupon match hone par ₹20 kam karna
+        finalCalculatedPrice = (originalBasePrice + 25) - 20;
+        priceTag.innerText = `₹${finalCalculatedPrice}`;
+        
+        msg.innerText = `🎉 Code "RK KUMAR" Applied! ₹20 saved.`;
+        msg.style.display = "block";
+        msg.style.color = "#25D366";
+        document.getElementById('couponInput').disabled = true;
+    } else {
+        msg.innerText = `❌ Invalid Coupon Code!`;
+        msg.style.display = "block";
+        msg.style.color = "#ff3333";
+    }
 }
 
 function closeModal() {
@@ -83,6 +182,7 @@ function sendOrder() {
     const name = document.getElementById('userName').value.trim();
     const address = document.getElementById('userAddress').value.trim();
     const isAgreed = document.getElementById('agreeTerms').checked; // Checkbox tracking
+    const couponApplied = document.getElementById('couponInput') ? document.getElementById('couponInput').disabled : false;
     const phoneNumber = "917507726901"; 
 
     // 1. Basic validation check
@@ -102,8 +202,11 @@ function sendOrder() {
     const badge = document.getElementById('cart-count');
     if(badge) badge.innerText = cartCount;
 
-    // Structured enterprise dispatch message formatting with accepted legal T&C conditions
-    const message = `✨ *NEW ORDER RECEIVED* ✨\n\n👤 *Customer Name:* ${name}\n📍 *Delivery Address:* ${address}\n\n📦 *Product Ordered:* ${selectedProduct}\n💰 *Price Total:* ${selectedPrice}\n\n✅ *Customer Agreement:* I agree that payment will be online & No returns after sale.`;
+    // Coupon tracking string for WhatsApp billing record
+    const couponStatus = couponApplied ? "RK KUMAR (₹20 Applied)" : "None";
+
+    // Structured enterprise dispatch message formatting
+    const message = `✨ *NEW ORDER RECEIVED* ✨\n\n👤 *Customer Name:* ${name}\n📍 *Delivery Address:* ${address}\n\n📦 *Product Ordered:* ${selectedProduct}\n🎫 *Coupon Used:* ${couponStatus}\n💰 *Price Total:* ₹${finalCalculatedPrice}\n\n✅ *Customer Agreement:* I agree that payment will be online & No returns after sale.`;
     
     const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
     
