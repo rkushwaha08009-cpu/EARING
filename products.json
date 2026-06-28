@@ -1,4 +1,20 @@
 [
     { "id": 1, "title": "Classic Golden Drop", "price": 86, "image": "images/1.png", "status": "available" },
-    { "id": 2, "title": "Elegant Diamond Stud", "price": 83, "image": "images/2.png", "status": "available" }
+    { "id": 2, "title": "Elegant Diamond Stud", "price": 83, "image": "images/2.png", "status": "available" },
+    { "id": 3, "title": "Royal Jhumka Edition", "price": 88, "image": "images/3.png", "status": "available" },
+    { "id": 4, "title": "Stylish Earing", "price": 84, "image": "images/4.png", "status": "available" },
+    { "id": 5, "title": "Lustrous Pearl", "price": 87, "image": "images/5.png", "status": "available" },
+    { "id": 6, "title": "Chrome Drops", "price": 87, "image": "images/6.png", "status": "available" },
+    { "id": 7, "title": "Silver Steal Pearl", "price": 81, "image": "images/7.png", "status": "available" },
+    { "id": 8, "title": "Golden Steal Pearl", "price": 81, "image": "images/8.png", "status": "available" },
+    { "id": 9, "title": "Crystal Dangler", "price": 87, "image": "images/9.png", "status": "available" },
+    { "id": 10, "title": "Luxury Blue Tassel", "price": 99, "image": "images/10.png", "status": "available" },
+    { "id": 11, "title": "Enamel Dangles", "price": 87, "image": "images/11.png", "status": "available" },
+    { "id": 12, "title": "Luxury Ruby Halo Studs", "price": 87, "image": "images/12.png", "status": "available" },
+    { "id": 13, "title": "PREMIUM BLUE DIAMOND", "price": 87, "image": "images/13.png", "status": "available" },
+    { "id": 14, "title": "New Style 14", "price": 87, "image": "images/14.png", "status": "available" },
+    { "id": 15, "title": "New Style 15", "price": 87, "image": "images/15.png", "status": "available" },
+    { "id": 16, "title": "New Style 16", "price": 87, "image": "images/16.png", "status": "available" },
+    { "id": 17, "title": "New Style 17", "price": 87, "image": "images/17.png", "status": "available" },
+    { "id": 18, "title": "New Style 18", "price": 87, "image": "images/18.png", "status": "available" }
 ]
