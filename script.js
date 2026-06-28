@@ -3,27 +3,99 @@ const products = [
     {
         id: 1,
         title: "Classic Golden Drop",
-        price: "₹95",
+        price: "₹86",
         image: "images/1.png"
     },
     {
         id: 2,
         title: "Elegant Diamond Stud",
-        price: "₹96",
+        price: "₹83",
         image: "images/2.png"
     },
     {
         id: 3,
         title: "Royal Jhumka Edition",
-        price: "₹99",
+        price: "₹88",
         image: "images/3.png"
     },
     {
         id: 4,
         title: "Stylish Earing",
-        price: "₹86",
+        price: "₹84",
         image: "images/4.png"
-    }      
+    },
+    {
+        id: 5,
+        title: "xyz",
+        price: "87",
+        image: "images/5.png"
+    },
+    {
+        id: 6,
+        title: "xyz",
+        price: "87",
+        image: "images/6.png"
+    },
+    {
+        id: 7,
+        title: "xyz",
+        price: "87",
+        image: "images/7.png"
+    },
+    {
+        id: 8,
+        title: "xyz",
+        price: "87",
+        image: "images/8.png"
+    },
+    {
+        id: 9,
+        title: "xyz",
+        price: "87",
+        image: "images/9.png"
+    },
+    {
+        id: 10,
+        title: "xyz",
+        price: "87",
+        image: "images/10.png"
+    },
+    {
+        id: 11,
+        title: "xyz",
+        price: "87",
+        image: "images/11.png"
+    },
+    {
+        id: 12,
+        title: "xyz",
+        price: "87",
+        image: "images/12.png"
+    },
+    {
+        id: 13,
+        title: "xyz",
+        price: "87",
+        image: "images/13.png"
+    },
+    {
+        id: 14,
+        title: "xyz",
+        price: "87",
+        image: "images/14.png"
+    },
+    {
+        id: 15,
+        title: "xyz",
+        price: "87",
+        image: "images/15.png"
+    },
+    {
+        id: 16,
+        title: "xyz",
+        price: "87",
+        image: "images/16.png"
+    },
 ];
 
 // Tracking state parameters
