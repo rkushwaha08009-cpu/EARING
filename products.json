@@ -1,0 +1,4 @@
+[
+    { "id": 1, "title": "Classic Golden Drop", "price": 86, "image": "images/1.png", "status": "available" },
+    { "id": 2, "title": "Elegant Diamond Stud", "price": 83, "image": "images/2.png", "status": "available" }
+]
