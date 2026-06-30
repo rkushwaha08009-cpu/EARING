@@ -3,7 +3,7 @@ const products = [
 {
 id:"@Raj1",
 title:"Classic Golden Drop",
-price:86,
+price:99,
 category:"normal",
 variants:{
 Default:"images/1.png"
@@ -14,7 +14,7 @@ Default:"images/1.png"
 {
 id:"@Raj2",
 title:"Elegant Diamond Stud",
-price:83,
+price:96,
 category:"normal",
 variants:{
 Default:"images/2.png"
@@ -25,7 +25,7 @@ Default:"images/2.png"
 {
 id:"@Raj3",
 title:"Royal Jhumka Edition",
-price:88,
+price:98,
 category:"normal",
 variants:{
 Default:"images/3.png"
@@ -36,7 +36,7 @@ Default:"images/3.png"
 {
 id:"@Raj4",
 title:"Stylish Earring",
-price:84,
+price:94,
 category:"normal",
 variants:{
 Default:"images/4.png"
@@ -47,7 +47,7 @@ Default:"images/4.png"
 {
 id:"@Raj5",
 title:"Earring Model 5",
-price:87,
+price:97,
 category:"normal",
 variants:{
 Default:"images/5.png"
@@ -69,7 +69,7 @@ Default:"images/6.png"
 {
 id:"@Raj7",
 title:"Earring Model 7",
-price:87,
+price:95,
 category:"normal",
 variants:{
 Default:"images/7.png"
@@ -80,7 +80,7 @@ Default:"images/7.png"
 {
 id:"@Raj8",
 title:"Earring Model 8",
-price:87,
+price:97,
 category:"normal",
 variants:{
 Default:"images/8.png"
@@ -91,7 +91,7 @@ Default:"images/8.png"
 {
 id:"@Raj9",
 title:"Earring Model 9",
-price:87,
+price:97,
 category:"normal",
 variants:{
 Default:"images/9.png"
@@ -102,7 +102,7 @@ Default:"images/9.png"
 {
 id:"@Raj10",
 title:"Earring Model 10",
-price:87,
+price:99,
 category:"normal",
 variants:{
 Default:"images/10.png"
@@ -113,7 +113,7 @@ Default:"images/10.png"
 {
 id:"@Raj11",
 title:"Earring Model 11",
-price:87,
+price:99,
 category:"normal",
 variants:{
 Default:"images/11.png"
@@ -124,7 +124,7 @@ Default:"images/11.png"
 {
 id:"@Raj12",
 title:"Earring Model 12",
-price:87,
+price:99,
 category:"normal",
 variants:{
 Default:"images/12.png"
@@ -135,7 +135,7 @@ Default:"images/12.png"
 {
 id:"@Raj13",
 title:"Earring Model 13",
-price:87,
+price:,
 category:"normal",
 variants:{
 Default:"images/13.png"
@@ -146,7 +146,7 @@ Default:"images/13.png"
 {
 id:"@Raj14",
 title:"Earring Model 14",
-price:87,
+price:99,
 category:"normal",
 variants:{
 Default:"images/14.png"
@@ -157,7 +157,7 @@ Default:"images/14.png"
 {
 id:"@Raj15",
 title:"Earring Model 15",
-price:87,
+price:99,
 category:"normal",
 variants:{
 Default:"images/15.png"
@@ -168,7 +168,7 @@ Default:"images/15.png"
 {
 id:"@Raj16",
 title:"Earring Model 16",
-price:87,
+price:99,
 category:"normal",
 variants:{
 Default:"images/16.png"
@@ -179,7 +179,7 @@ Default:"images/16.png"
 {
 id:"@Raj17",
 title:"Royal Multi-Jhumka",
-price:120,
+price:161,
 category:"premium",
 
 variants:{
@@ -195,7 +195,7 @@ Black:"images/17black.png"
 {
 id:"@Raj18",
 title:"Luxury Stone Drop",
-price:150,
+price:161,
 category:"premium",
 
 variants:{
@@ -212,7 +212,7 @@ Green:"images/18green.png"
 {
 id:"@Raj19",
 title:"Elegant Pearl Stud",
-price:130,
+price:161,
 category:"premium",
 
 variants:{
@@ -228,7 +228,7 @@ Gold:"images/19gold.png"
 {
 id:"@Raj20",
 title:"Modern Diamond Hoop",
-price:180,
+price:161,
 category:"premium",
 
 variants:{
