@@ -135,7 +135,7 @@ Default:"images/12.png"
 {
 id:"@Raj13",
 title:"Earring Model 13",
-price:,
+price:92,
 category:"normal",
 variants:{
 Default:"images/13.png"
