@@ -44,9 +44,26 @@
             <a href="#product-grid" class="shop-now-btn">Explore Collection <i class="fas fa-chevron-down"></i></a>
         </div>
     </header>
+<section class="filter-section container" style="margin-top: 30px;">
+    <input type="text" id="searchBar" placeholder="Search by name or @Raj ID..." class="search-bar">
+    <div class="filter-groups">
+        <select onchange="renderProducts('all', this.value)">
+            <option value="all">Price Range</option>
+            <option value="0-100">0 - 100</option>
+            <option value="100-200">100 - 200</option>
+            <option value="200-300">200 - 300</option>
+        </select>
+        <select onchange="renderProducts(this.value)">
+            <option value="all">Category</option>
+            <option value="premium">Premium</option>
+            <option value="normal">Normal</option>
+        </select>
+    </div>
+</section>
 
     <main class="container">
         <h2 class="section-title">Our Exclusive Pieces</h2>
+        <img id="modalImg" src="" style="width:100%; border-radius:10px; margin-bottom:15px; border:1px solid #d4af37;">
         <div id="product-grid" class="product-grid">
         </div>
     </main>
@@ -116,30 +133,106 @@
         </div>
     </section>
 
-    <div id="orderModal" class="modal">
-        <div class="modal-content">
-            <span class="close-btn" onclick="closeModal()">&times;</span>
-            <i class="fab fa-whatsapp modal-wa-icon"></i>
-            <h2>Complete Your Order</h2>
-            <p id="modal-product-display"></p>
-            
-            <div class="input-group">
-                <input type="text" id="userName" placeholder="Your Name" required>
-            </div>
-            <div class="input-group">
-                <input type="text" id="userAddress" placeholder="Your Full Delivery Address" required>
-            </div>
+<!-- ORDER MODAL -->
 
-            <div class="terms-container">
-                <input type="checkbox" id="agreeTerms">
-                <label for="agreeTerms">
-                    Main sehmat hu ki payment online hoga aur ek baar bechne ke baad return nahi hoga. ⚠️
-                </label>
-            </div>
+<div id="orderModal" class="modal">
 
-            <button class="modal-buy-btn" onclick="sendOrder()">
-                Confirm & Order via WhatsApp
-            </button>
+<div class="modal-content">
+
+<span class="close-btn" onclick="closeModal()">
+&times;
+</span>
+
+
+<i class="fab fa-whatsapp modal-wa-icon"></i>
+
+
+<h2>Complete Order</h2>
+
+
+<p id="modal-product-display"></p>
+
+
+
+<div class="input-group">
+
+
+<input 
+type="text"
+id="userName"
+placeholder="Your Name">
+
+
+<input 
+type="text"
+id="userPhone"
+placeholder="Phone Number">
+
+
+<input 
+type="text"
+id="userSocial"
+placeholder="Instagram / Email">
+
+
+<textarea
+id="userAddress"
+placeholder="Full Address"></textarea>
+
+
+</div>
+
+
+
+
+<input 
+type="text"
+id="couponInput"
+placeholder="Enter Coupon Code">
+
+
+<button 
+onclick="applyCoupon()"
+class="banner-copy-btn">
+
+Apply Coupon
+
+</button>
+
+
+<p id="couponMsg"></p>
+
+
+
+<div class="terms-container">
+
+<input 
+type="checkbox"
+id="agreeTerms">
+
+
+<label>
+I agree to payment & no return policy
+</label>
+
+
+</div>
+
+
+
+<button 
+class="modal-buy-btn"
+onclick="sendOrder()">
+
+Confirm & Order via WhatsApp
+
+</button>
+
+
+
+</div>
+
+</div>
         </div>
     </div>
 
