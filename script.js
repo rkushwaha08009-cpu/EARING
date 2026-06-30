@@ -1,277 +1,813 @@
-// Product Dataset Mapping
 const products = [
-    { id: 1, title: "Classic Golden Drop", price: "₹86", image: "images/1.png" },
-    { id: 2, title: "Elegant Diamond Stud", price: "₹83", image: "images/2.png" },
-    { id: 3, title: "Royal Jhumka Edition", price: "₹88", image: "images/3.png" },
-    { id: 4, title: "Stylish Earing", price: "₹84", image: "images/4.png" },
-    { id: 5, title: "xyz", price: "87", image: "images/5.png" },
-    { id: 6, title: "xyz", price: "87", image: "images/6.png" },
-    { id: 7, title: "xyz", price: "87", image: "images/7.png" },
-    { id: 8, title: "xyz", price: "87", image: "images/8.png" },
-    { id: 9, title: "xyz", price: "87", image: "images/9.png" },
-    { id: 10, title: "xyz", price: "87", image: "images/10.png" },
-    { id: 11, title: "xyz", price: "87", image: "images/11.png" },
-    { id: 12, title: "xyz", price: "87", image: "images/12.png" },
-    { id: 13, title: "xyz", price: "87", image: "images/13.png" },
-    { id: 14, title: "xyz", price: "87", image: "images/14.png" },
-    { id: 15, title: "xyz", price: "87", image: "images/15.png" },
-    { id: 16, title: "xyz", price: "87", image: "images/16.png" },
+
+{
+id:"@Raj1",
+title:"Classic Golden Drop",
+price:86,
+category:"normal",
+variants:{
+Default:"images/1.png"
+}
+},
+
+
+{
+id:"@Raj2",
+title:"Elegant Diamond Stud",
+price:83,
+category:"normal",
+variants:{
+Default:"images/2.png"
+}
+},
+
+
+{
+id:"@Raj3",
+title:"Royal Jhumka Edition",
+price:88,
+category:"normal",
+variants:{
+Default:"images/3.png"
+}
+},
+
+
+{
+id:"@Raj4",
+title:"Stylish Earring",
+price:84,
+category:"normal",
+variants:{
+Default:"images/4.png"
+}
+},
+
+
+{
+id:"@Raj5",
+title:"Earring Model 5",
+price:87,
+category:"normal",
+variants:{
+Default:"images/5.png"
+}
+},
+
+
+{
+id:"@Raj6",
+title:"Earring Model 6",
+price:87,
+category:"normal",
+variants:{
+Default:"images/6.png"
+}
+},
+
+
+{
+id:"@Raj7",
+title:"Earring Model 7",
+price:87,
+category:"normal",
+variants:{
+Default:"images/7.png"
+}
+},
+
+
+{
+id:"@Raj8",
+title:"Earring Model 8",
+price:87,
+category:"normal",
+variants:{
+Default:"images/8.png"
+}
+},
+
+
+{
+id:"@Raj9",
+title:"Earring Model 9",
+price:87,
+category:"normal",
+variants:{
+Default:"images/9.png"
+}
+},
+
+
+{
+id:"@Raj10",
+title:"Earring Model 10",
+price:87,
+category:"normal",
+variants:{
+Default:"images/10.png"
+}
+},
+
+
+{
+id:"@Raj11",
+title:"Earring Model 11",
+price:87,
+category:"normal",
+variants:{
+Default:"images/11.png"
+}
+},
+
+
+{
+id:"@Raj12",
+title:"Earring Model 12",
+price:87,
+category:"normal",
+variants:{
+Default:"images/12.png"
+}
+},
+
+
+{
+id:"@Raj13",
+title:"Earring Model 13",
+price:87,
+category:"normal",
+variants:{
+Default:"images/13.png"
+}
+},
+
+
+{
+id:"@Raj14",
+title:"Earring Model 14",
+price:87,
+category:"normal",
+variants:{
+Default:"images/14.png"
+}
+},
+
+
+{
+id:"@Raj15",
+title:"Earring Model 15",
+price:87,
+category:"normal",
+variants:{
+Default:"images/15.png"
+}
+},
+
+
+{
+id:"@Raj16",
+title:"Earring Model 16",
+price:87,
+category:"normal",
+variants:{
+Default:"images/16.png"
+}
+},
+
+
+{
+id:"@Raj17",
+title:"Royal Multi-Jhumka",
+price:120,
+category:"premium",
+
+variants:{
+Gold:"images/17gold.png",
+Silver:"images/17silver.png",
+Black:"images/17black.png"
+}
+
+},
+
+
+
+{
+id:"@Raj18",
+title:"Luxury Stone Drop",
+price:150,
+category:"premium",
+
+variants:{
+Red:"images/18red.png",
+Black:"images/18black.png",
+Blue:"images/18blue.png",
+Green:"images/18green.png"
+}
+
+},
+
+
+
+{
+id:"@Raj19",
+title:"Elegant Pearl Stud",
+price:130,
+category:"premium",
+
+variants:{
+White:"images/19white.png",
+Pink:"images/19pink.png",
+Gold:"images/19gold.png"
+}
+
+},
+
+
+
+{
+id:"@Raj20",
+title:"Modern Diamond Hoop",
+price:180,
+category:"premium",
+
+variants:{
+Silver:"images/20silver.png",
+Black:"images/20black.png",
+Rose:"images/20rose.png"
+}
+
+}
+
+
 ];
 
-// Tracking state parameters
 let selectedProduct = "";
-let originalBasePrice = 0; 
-let finalCalculatedPrice = 0; 
+let selectedColor = "Default";
+let originalBasePrice = 0;
+let finalCalculatedPrice = 0;
+let activeCouponApplied = "None";
 let cartCount = 0;
-let activeCouponApplied = "None"; // Konsa coupon laga track karne ke liye
 
-// Injection and premium initialization function
-function loadProducts() {
-    const grid = document.getElementById('product-grid');
-    if (!grid) return;
 
-    grid.innerHTML = products.map((product, index) => {
-        const baseNum = parseInt(product.price.toString().replace(/[^0-9]/g, ''));
-        const displayPrice = baseNum + 25;
+function renderProducts(
+    category = "all",
+    priceRange = "all",
+    search = ""
+){
 
-        return `
-            <div class="product-card" style="animation: premiumFadeIn ${0.4 + index * 0.15}s ease forwards; opacity: 0;">
-                <div class="product-img-container">
-                    <img src="${product.image}" alt="${product.title}" onerror="this.onerror=null; this.src='https://images.unsplash.com/photo-1617038220319-276d3c1626c9?q=80&w=500';">
-                </div>
-                <div class="product-info">
-                    <h3 class="product-title">${product.title}</h3>
-                    <p class="product-price">₹${displayPrice}</p>
-                    <button class="buy-btn" onclick="openModal('${product.title}', ${displayPrice})">
-                         Buy Now
-                    </button>
-                </div>
-            </div>
-        `;
-    }).join('');
+const grid = document.getElementById("product-grid");
+
+
+let filtered = products.filter(p=>{
+
+
+let cat =
+category==="all" || p.category===category;
+
+
+let price = true;
+
+
+if(priceRange !== "all"){
+
+let range = priceRange.split("-");
+
+price =
+p.price >= Number(range[0]) &&
+p.price <= Number(range[1]);
+
 }
 
-// Inline luxury dynamic animation and form styling parser
-const dynamicStyles = document.createElement('style');
-dynamicStyles.innerHTML = `
-    @keyframes premiumFadeIn {
-        from { opacity: 0; transform: translateY(40px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-    .coupon-section {
-        background: rgba(212, 175, 55, 0.05);
-        border: 1px dashed #d4af37;
-        padding: 12px;
-        border-radius: 12px;
-        margin: 15px 0;
-        text-align: left;
-    }
-    .coupon-header {
-        font-size: 11px;
-        color: #d4af37;
-        font-weight: 600;
-        margin-bottom: 8px;
-        line-height: 1.4;
-    }
-    .coupon-row {
-        display: flex;
-        gap: 8px;
-    }
-    .coupon-row input {
-        margin-bottom: 0 !important;
-        padding: 10px !important;
-    }
-    .apply-btn {
-        background: #d4af37;
-        color: black;
-        border: none;
-        padding: 0 15px;
-        border-radius: 10px;
-        font-weight: 600;
-        font-size: 13px;
-        cursor: pointer;
-        transition: 0.2s;
-    }
-    .apply-btn:hover { background: #fff; }
-    .coupon-success {
-        color: #25D366;
-        font-size: 12px;
-        margin-top: 5px;
-        font-weight: 500;
-        display: none;
-    }
-    .verification-group {
-        margin: 10px 0;
-        text-align: left;
-    }
-    .verification-group label {
-        display: block;
-        font-size: 12px;
-        color: #aaa;
-        margin-bottom: 5px;
-        font-weight: 500;
-    }
-    .verification-group input {
-        width: 100%;
-        padding: 10px;
-        border: 1px solid #333;
-        background: #111;
-        color: #fff;
-        border-radius: 8px;
-        box-sizing: border-box;
-    }
+
+
+let find =
+p.title.toLowerCase()
+.includes(search.toLowerCase())
+||
+p.id.toLowerCase()
+.includes(search.toLowerCase());
+
+
+return cat && price && find;
+
+
+});
+
+
+
+grid.innerHTML = filtered.map(p=>{
+
+
+let firstImage =
+Object.values(p.variants)[0];
+
+
+return `
+
+
+<div class="product-card" data-color="${Object.keys(p.variants)[0]}">
+
+
+<div class="product-img-container">
+
+<img 
+class="main-product-image"
+src="${firstImage}"
+onerror="this.onerror=null;this.src='images/default.png'">
+
+</div>
+
+
+
+<div class="product-info">
+
+
+<h3 class="product-title">
+
+${p.title}
+
+<small>
+${p.id}
+</small>
+
+</h3>
+
+
+
+<div class="colors">
+
+${
+Object.keys(p.variants).map(color=>`
+
+<button onclick="changeColor(this,'${p.variants[color]}','${color}')">
+
+${color}
+
+</button>
+
+`).join("")
+}
+
+</div>
+
+
+
+<p class="product-price">
+
+₹${p.price}
+
+</p>
+
+
+
+<button 
+class="buy-btn"
+onclick="buyProduct('${p.title}',${p.price},this)">
+
+Buy Now
+
+</button>
+
+
+</div>
+
+
+</div>
+
+
+`
+
+
+}).join("");
+
+}
+
+
+
+
+function changeColor(btn,img,color){
+
+
+let card =
+btn.closest(".product-card");
+
+
+let image =
+card.querySelector(".main-product-image");
+
+
+image.style.opacity="0";
+
+
+setTimeout(()=>{
+
+image.src=img;
+
+image.style.opacity="1";
+
+
+},200);
+
+
+
+card.dataset.color=color;
+
+
+
+card.querySelectorAll(".colors button")
+.forEach(b=>b.classList.remove("active"));
+
+
+btn.classList.add("active");
+
+
+}
+
+
+
+
+
+
+
+function buyProduct(name,price,btn){
+
+
+let card =
+btn.closest(".product-card");
+
+
+selectedProduct=name;
+
+
+selectedColor =
+card.dataset.color;
+
+
+
+originalBasePrice=price;
+
+
+finalCalculatedPrice=price;
+
+
+activeCouponApplied="None";
+
+
+openModal(
+name,
+price,
+selectedColor
+);
+
+
+}
+
+
+
+
+
+
+
+
+function openModal(name,price,color){
+
+
+document.getElementById(
+"modal-product-display"
+).innerHTML=`
+
+${name}
+
+<br>
+
+Color:
+<b>${color}</b>
+
+<br>
+
+Price:
+
+<span id="modal-price-tag">
+₹${price}
+</span>
+
+
 `;
-document.head.appendChild(dynamicStyles);
 
-// Seamless checkout Modal controls
-function openModal(name, updatedPrice) {
-    selectedProduct = name;
-    originalBasePrice = updatedPrice;
-    finalCalculatedPrice = updatedPrice;
-    activeCouponApplied = "None"; // Reset state
-    
-    document.getElementById('modal-product-display').innerHTML = `
-        ${name} — <span id="modal-price-tag">₹${finalCalculatedPrice}</span>
-    `;
 
-    let existingCoupon = document.getElementById('coupon-box-wrapper');
-    let userNameField = document.getElementById('userName');
-    
-    if (!existingCoupon && userNameField) {
-        let extraFields = document.createElement('div');
-        extraFields.id = 'extra-verification-fields';
-        extraFields.innerHTML = `
-            <div class="verification-group">
-                <label>📱 Contact Mobile Number (WhatsApp/Call)</label>
-                <input type="tel" id="userPhone" placeholder="Enter 10-digit mobile number" maxlength="10">
-            </div>
-            <div class="verification-group">
-                <label>📸 Instagram Username / Email (For Verification)</label>
-                <input type="text" id="userSocial" placeholder="@username or email address">
-            </div>
-        `;
-        userNameField.parentNode.insertBefore(extraFields, userNameField.nextSibling);
 
-        let couponWrapper = document.createElement('div');
-        couponWrapper.id = 'coupon-box-wrapper';
-        couponWrapper.className = 'coupon-section';
-        couponWrapper.innerHTML = `
-            <div class="coupon-header">🎁 Use code "RK KUMAR" for ₹20 OFF! <br>🌟 Got a Next-Order Card? Enter that code here for a bigger discount!</div>
-            <div class="coupon-row">
-                <input type="text" id="couponInput" placeholder="Enter Coupon Code">
-                <button type="button" class="apply-btn" onclick="applyCoupon()">Apply</button>
-            </div>
-            <div id="couponMsg" class="coupon-success">🎉 Code Applied! Discount Added!</div>
-        `;
-        let addressField = document.getElementById('userAddress');
-        if(addressField) {
-            addressField.parentNode.insertBefore(couponWrapper, addressField.nextSibling);
-        }
-    } else {
-        if(document.getElementById('userPhone')) document.getElementById('userPhone').value = "";
-        if(document.getElementById('userSocial')) document.getElementById('userSocial').value = "";
-        if(document.getElementById('couponInput')) {
-            document.getElementById('couponInput').value = "";
-            document.getElementById('couponInput').disabled = false;
-        }
-        if(document.getElementById('couponMsg')) document.getElementById('couponMsg').style.display = "none";
-    }
+document.getElementById(
+"orderModal"
+).style.display="block";
 
-    document.getElementById('orderModal').style.display = "block";
+
 }
 
-// Dual Coupon Evaluation Trigger
-function applyCoupon() {
-    let code = document.getElementById('couponInput').value.trim();
-    let msg = document.getElementById('couponMsg');
-    let priceTag = document.getElementById('modal-price-tag');
 
-    if (code === "RK KUMAR") {
-        finalCalculatedPrice = originalBasePrice - 20;
-        priceTag.innerText = `₹${finalCalculatedPrice}`;
-        activeCouponApplied = "RK KUMAR (₹20 Off)";
-        
-        msg.innerText = `🎉 Code "RK KUMAR" Applied! ₹20 saved.`;
-        msg.style.display = "block";
-        msg.style.color = "#25D366";
-        document.getElementById('couponInput').disabled = true;
-    } 
-    else if (code === "RK_PREMIUM") {
-        finalCalculatedPrice = originalBasePrice - 25;
-        priceTag.innerText = `₹${finalCalculatedPrice}`;
-        activeCouponApplied = "RK_PREMIUM (₹25 Next-Order Special)";
-        
-        msg.innerText = `🔥 Next-Order Card "RK_PREMIUM" Applied! ₹25 saved!`;
-        msg.style.display = "block";
-        msg.style.color = "#d4af37"; 
-        document.getElementById('couponInput').disabled = true;
-    } 
-    else {
-        msg.innerText = `❌ Invalid Coupon Code!`;
-        msg.style.display = "block";
-        msg.style.color = "#ff3333";
-    }
+
+
+
+
+function closeModal(){
+
+document.getElementById(
+"orderModal"
+).style.display="none";
+
 }
 
-function closeModal() {
-    document.getElementById('orderModal').style.display = "none";
-    document.getElementById('userName').value = "";
-    document.getElementById('userAddress').value = "";
-    if(document.getElementById('userPhone')) document.getElementById('userPhone').value = "";
-    if(document.getElementById('userSocial')) document.getElementById('userSocial').value = "";
-    document.getElementById('agreeTerms').checked = false; 
+
+
+
+
+
+
+
+
+function applyCoupon(){
+
+
+let code =
+document.getElementById("couponInput")
+.value.trim();
+
+
+
+let msg =
+document.getElementById("couponMsg");
+
+
+
+let price =
+document.getElementById("modal-price-tag");
+
+
+
+
+if(code==="RK KUMAR"){
+
+
+finalCalculatedPrice =
+originalBasePrice-20;
+
+
+activeCouponApplied="RK KUMAR";
+
+
 }
 
-function sendOrder() {
-    const name = document.getElementById('userName').value.trim();
-    const address = document.getElementById('userAddress').value.trim();
-    const phone = document.getElementById('userPhone') ? document.getElementById('userPhone').value.trim() : "";
-    const social = document.getElementById('userSocial') ? document.getElementById('userSocial').value.trim() : "";
-    const isAgreed = document.getElementById('agreeTerms').checked; 
-    const phoneNumber = "917507726901"; 
 
-    if(!name || !address || !phone || !social) {
-        alert("Bhai, order confirm karne ke liye Name, Phone, Address aur Insta/Email saari details bharna zaroori hai! 😊");
-        return;
-    }
+else if(code==="RK_PREMIUM"){
 
-    if(phone.length < 10) {
-        alert("⚠️ Please enter a valid 10-digit mobile number!");
-        return;
-    }
 
-    if(!isAgreed) {
-        alert("⚠️ Please agree to the terms: Payment online karna hoga aur ek baar bechne ke baad return nahi hoga!");
-        return;
-    }
+finalCalculatedPrice =
+originalBasePrice-25;
 
-    cartCount++;
-    const badge = document.getElementById('cart-count');
-    if(badge) badge.innerText = cartCount;
 
-    const message = `✨ *NEW ORDER CONFIRMED* ✨\n\n👤 *Customer Name:* ${name}\n📱 *Contact Number:* ${phone}\n📸 *Verification Info:* ${social}\n📍 *Delivery Address:* ${address}\n\n📦 *Product Ordered:* ${selectedProduct}\n🎫 *Coupon Used:* ${activeCouponApplied}\n💰 *Price Total:* ₹${finalCalculatedPrice}\n\n✅ *Customer Agreement:* I agree that payment will be online & No returns after sale.`;
-    
-    const whatsappUrl = `https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`;
-    
-    window.open(whatsappUrl, '_blank');
-    closeModal();
+activeCouponApplied="RK_PREMIUM";
+
+
 }
 
-// One-Tap Coupon Copy System
-function copyCoupon() {
-    const couponText = document.getElementById('couponCode').innerText;
-    const btnText = document.getElementById('copyBtnText');
-    
-    navigator.clipboard.writeText(couponText).then(() => {
-        if(btnText) btnText.innerText = "Copied! 🎉";
-        alert("🎉 Code 'RK KUMAR' successfully copied! Ab order karte waqt paste kar dena. 😊");
-        
-        setTimeout(() => {
-            if(btnText) btnText.innerText = "Copy Code";
-        }, 3000);
-    }).catch(err => {
-        console.error('Error in copying: ', err);
-    });
+else{
+
+
+msg.innerHTML="❌ Invalid Coupon";
+
+msg.style.display="block";
+
+return;
+
 }
 
-document.addEventListener('DOMContentLoaded', loadProducts);
+
+
+price.innerHTML =
+"₹"+finalCalculatedPrice;
+
+
+msg.innerHTML=
+"🎉 Coupon Applied";
+
+
+msg.style.display="block";
+
+
+}
+
+
+
+
+
+
+
+
+
+function copyCoupon(){
+
+
+let code =
+document.getElementById("couponCode")
+.innerText;
+
+
+
+navigator.clipboard.writeText(code);
+
+
+
+document.getElementById("copyBtnText")
+.innerHTML="Copied ✓";
+
+
+setTimeout(()=>{
+
+
+document.getElementById("copyBtnText")
+.innerHTML="Copy Code";
+
+
+},2000);
+
+
+}
+
+
+
+
+
+
+
+
+
+
+function sendOrder(){
+
+
+let name =
+document.getElementById("userName").value.trim();
+
+
+let address =
+document.getElementById("userAddress").value.trim();
+
+
+let phone =
+document.getElementById("userPhone").value.trim();
+
+
+let social =
+document.getElementById("userSocial").value.trim();
+
+
+let agree =
+document.getElementById("agreeTerms").checked;
+
+
+
+if(!name || !address || !phone || !social){
+
+
+alert("Please fill all details");
+
+return;
+
+}
+
+
+
+if(phone.length < 10){
+
+
+alert("Enter valid phone number");
+
+return;
+
+}
+
+
+
+if(!agree){
+
+
+alert("Accept terms first");
+
+return;
+
+}
+
+
+
+
+cartCount++;
+
+
+document.getElementById("cart-count")
+.innerHTML=cartCount;
+
+
+
+
+let message = `
+
+✨ NEW ORDER ✨
+
+
+Name:
+${name}
+
+
+Phone:
+${phone}
+
+
+Instagram/Email:
+${social}
+
+
+Address:
+${address}
+
+
+Product:
+${selectedProduct}
+
+
+Color:
+${selectedColor}
+
+
+Coupon:
+${activeCouponApplied}
+
+
+Total:
+₹${finalCalculatedPrice}
+
+
+`;
+
+
+
+window.open(
+
+"https://wa.me/917507726901?text="+
+encodeURIComponent(message),
+
+"_blank"
+
+);
+
+
+
+closeModal();
+
+
+}
+
+
+
+
+
+
+
+
+
+
+document.addEventListener(
+"DOMContentLoaded",
+
+()=>{
+
+
+renderProducts();
+
+
+let search =
+document.getElementById("searchBar");
+
+
+if(search){
+
+
+search.addEventListener(
+"input",
+
+e=>{
+
+
+renderProducts(
+"all",
+"all",
+e.target.value
+);
+
+
+});
+
+
+}
+
+
+});
