@@ -51,7 +51,7 @@ price:97,
 category:"normal",
 variants:{
 White:"images/5.png",
-Golden:"images/golden5.png
+Golden:"images/golden5.png"
 }
 },
 
