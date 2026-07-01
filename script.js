@@ -50,7 +50,8 @@ title:"Earring Model 5",
 price:97,
 category:"normal",
 variants:{
-Default:"images/5.png"
+White:"images/5.png",
+Golden:"images/golden5.png
 }
 },
 
