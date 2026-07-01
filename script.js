@@ -72,7 +72,8 @@ title:"Earring Model 7",
 price:95,
 category:"normal",
 variants:{
-Default:"images/7.png"
+Silver:"images/7.png",
+Golden:"images/8.png"
 }
 },
 
