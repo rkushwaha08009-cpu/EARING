@@ -185,9 +185,9 @@ price:161,
 category:"premium",
 
 variants:{
-Gold:"images/17gold.png",
-Silver:"images/17silver.png",
-Black:"images/17black.png"
+Pink:"images/pink17.png",
+Purple:"images/purple17.png",
+Black:"images/black17.png"
 }
 
 },
@@ -201,7 +201,7 @@ price:161,
 category:"premium",
 
 variants:{
-Red:"images/18red.png",
+Silver:"images/18.png",
 Black:"images/18black.png",
 Blue:"images/18blue.png",
 Green:"images/18green.png"
@@ -218,8 +218,8 @@ price:161,
 category:"premium",
 
 variants:{
-White:"images/19white.png",
-Pink:"images/19pink.png",
+Green:"images/green19.png",
+Pink:"images/pink19.png",
 Gold:"images/19gold.png"
 }
 
