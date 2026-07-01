@@ -111,7 +111,6 @@ Default:"images/10.png"
 }
 },
 
-
 {
 id:"@Raj11",
 title:"Earring Model 11",
@@ -183,15 +182,12 @@ id:"@Raj17",
 title:"Royal Multi-Jhumka",
 price:161,
 category:"premium",
-
 variants:{
 Pink:"images/pink17.png",
 Purple:"images/purple17.png",
 Black:"images/black17.png"
 }
-
 },
-
 
 
 {
@@ -199,16 +195,13 @@ id:"@Raj18",
 title:"Luxury Stone Drop",
 price:161,
 category:"premium",
-
 variants:{
 Silver:"images/18.png",
 Black:"images/18black.png",
 Blue:"images/18blue.png",
 Green:"images/18green.png"
 }
-
 },
-
 
 
 {
@@ -216,15 +209,12 @@ id:"@Raj19",
 title:"Elegant Pearl Stud",
 price:161,
 category:"premium",
-
 variants:{
 Green:"images/green19.png",
 Pink:"images/pink19.png",
 Gold:"images/19gold.png"
 }
-
 },
-
 
 
 {
@@ -232,17 +222,15 @@ id:"@Raj20",
 title:"Modern Diamond Hoop",
 price:161,
 category:"premium",
-
 variants:{
 Silver:"images/20silver.png",
 Black:"images/20black.png",
 Rose:"images/20rose.png"
 }
-
 }
 
-
 ];
+
 
 let selectedProduct = "";
 let selectedColor = "Default";
@@ -252,10 +240,11 @@ let activeCouponApplied = "None";
 let cartCount = 0;
 
 
+
 function renderProducts(
-    category = "all",
-    priceRange = "all",
-    search = ""
+category="all",
+priceRange="all",
+search=""
 ){
 
 const grid = document.getElementById("product-grid");
@@ -268,12 +257,12 @@ let cat =
 category==="all" || p.category===category;
 
 
-let price = true;
+let price=true;
 
 
-if(priceRange !== "all"){
+if(priceRange!=="all"){
 
-let range = priceRange.split("-");
+let range=priceRange.split("-");
 
 price =
 p.price >= Number(range[0]) &&
@@ -282,20 +271,15 @@ p.price <= Number(range[1]);
 }
 
 
-
 let find =
-p.title.toLowerCase()
-.includes(search.toLowerCase())
+p.title.toLowerCase().includes(search.toLowerCase())
 ||
-p.id.toLowerCase()
-.includes(search.toLowerCase());
+p.id.toLowerCase().includes(search.toLowerCase());
 
 
 return cat && price && find;
 
-
 });
-
 
 
 grid.innerHTML = filtered.map(p=>{
@@ -307,9 +291,7 @@ Object.values(p.variants)[0];
 
 return `
 
-
 <div class="product-card" data-color="${Object.keys(p.variants)[0]}">
-
 
 <div class="product-img-container">
 
@@ -321,26 +303,20 @@ onerror="this.onerror=null;this.src='images/default.png'">
 </div>
 
 
-
 <div class="product-info">
-
 
 <h3 class="product-title">
 
 ${p.title}
 
-<small>
-${p.id}
-</small>
+<small>${p.id}</small>
 
 </h3>
 
 
-
 <div class="colors">
 
-${
-Object.keys(p.variants).map(color=>`
+${Object.keys(p.variants).map(color=>`
 
 <button onclick="changeColor(this,'${p.variants[color]}','${color}')">
 
@@ -348,24 +324,19 @@ ${color}
 
 </button>
 
-`).join("")
-}
+`).join("")}
 
 </div>
 
 
-
 <p class="product-price">
-
 ₹${p.price}
-
 </p>
-
 
 
 <button 
 class="buy-btn"
-onclick="buyProduct('${p.title}',${p.price},this)">
+onclick="buyProduct('${p.id}','${p.title}',${p.price},this)">
 
 Buy Now
 
@@ -374,29 +345,20 @@ Buy Now
 
 </div>
 
-
 </div>
 
-
-`
-
+`;
 
 }).join("");
 
 }
-
-
-
-
 function changeColor(btn,img,color){
 
 
-let card =
-btn.closest(".product-card");
+let card = btn.closest(".product-card");
 
 
-let image =
-card.querySelector(".main-product-image");
+let image = card.querySelector(".main-product-image");
 
 
 image.style.opacity="0";
@@ -430,30 +392,33 @@ btn.classList.add("active");
 
 
 
-
-
-function buyProduct(name,price,btn){
+function buyProduct(id,name,price,btn){
 
 
 let card =
 btn.closest(".product-card");
 
 
-selectedProduct=name;
+selectedProduct =
+id + " - " + name;
 
 
 selectedColor =
-card.dataset.color;
+card.dataset.color || "Default";
 
 
-
-originalBasePrice=price;
-
-
-finalCalculatedPrice=price;
+originalBasePrice = price;
 
 
-activeCouponApplied="None";
+finalCalculatedPrice = price;
+
+
+activeCouponApplied = "None";
+
+
+document.getElementById("couponInput").value="";
+
+document.getElementById("couponMsg").style.display="none";
 
 
 openModal(
@@ -469,15 +434,13 @@ selectedColor
 
 
 
-
-
-
 function openModal(name,price,color){
 
 
 document.getElementById(
 "modal-product-display"
-).innerHTML=`
+).innerHTML = `
+
 
 ${name}
 
@@ -513,19 +476,27 @@ document.getElementById(
 
 function closeModal(){
 
+
 document.getElementById(
 "orderModal"
 ).style.display="none";
 
+
+
+document.getElementById("couponInput").value="";
+
+
+document.getElementById("couponMsg").style.display="none";
+
+
+finalCalculatedPrice =
+originalBasePrice;
+
+
+activeCouponApplied="None";
+
+
 }
-
-
-
-
-
-
-
-
 
 function applyCoupon(){
 
@@ -551,7 +522,7 @@ if(code==="RK KUMAR"){
 
 
 finalCalculatedPrice =
-originalBasePrice-20;
+Math.max(originalBasePrice - 20,0);
 
 
 activeCouponApplied="RK KUMAR";
@@ -564,7 +535,7 @@ else if(code==="RK_PREMIUM"){
 
 
 finalCalculatedPrice =
-originalBasePrice-25;
+Math.max(originalBasePrice - 25,0);
 
 
 activeCouponApplied="RK_PREMIUM";
@@ -589,7 +560,7 @@ price.innerHTML =
 "₹"+finalCalculatedPrice;
 
 
-msg.innerHTML=
+msg.innerHTML =
 "🎉 Coupon Applied";
 
 
@@ -648,23 +619,29 @@ function sendOrder(){
 
 
 let name =
-document.getElementById("userName").value.trim();
+document.getElementById("userName")
+.value.trim();
 
 
 let address =
-document.getElementById("userAddress").value.trim();
+document.getElementById("userAddress")
+.value.trim();
 
 
 let phone =
-document.getElementById("userPhone").value.trim();
+document.getElementById("userPhone")
+.value.trim();
 
 
 let social =
-document.getElementById("userSocial").value.trim();
+document.getElementById("userSocial")
+.value.trim();
 
 
 let agree =
-document.getElementById("agreeTerms").checked;
+document.getElementById("agreeTerms")
+.checked;
+
 
 
 
@@ -679,14 +656,16 @@ return;
 
 
 
-if(phone.length < 10){
+
+if(!/^\d{10}$/.test(phone)){
 
 
-alert("Enter valid phone number");
+alert("Enter valid 10 digit phone number");
 
 return;
 
 }
+
 
 
 
@@ -705,8 +684,10 @@ return;
 cartCount++;
 
 
+
 document.getElementById("cart-count")
 .innerHTML=cartCount;
+
 
 
 
@@ -752,6 +733,7 @@ Total:
 
 
 
+
 window.open(
 
 "https://wa.me/917507726901?text="+
@@ -776,7 +758,6 @@ closeModal();
 
 
 
-
 document.addEventListener(
 "DOMContentLoaded",
 
@@ -786,8 +767,10 @@ document.addEventListener(
 renderProducts();
 
 
+
 let search =
 document.getElementById("searchBar");
+
 
 
 if(search){
